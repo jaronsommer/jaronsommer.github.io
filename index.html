@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  Jaron Sommer – Persönliche Portfolio-Webseite
+  ============================================================
+  Datei:        index.html
+  Autor:        Jaron Sommer
+  Version:      1.0.0
+  Erstellt:     2026
+  GitHub Pages: https://jaronsommer.github.io
+
+  Beschreibung:
+    Einseitige (Single-Page) Portfolio-Webseite für die
+    Lehrstellensuche. Reines HTML/CSS/JS – kein Framework,
+    keine Dependencies, keine Build-Tools nötig.
+
+  Aufbau der Datei:
+    1. <head>          – Meta, Fonts, Styles
+    2. #nav            – Fixierte Navigation
+    3. #hero           – Einstiegsbereich mit Name & Berufswunsch
+    4. #about          – Kurzprofil & Stärken
+    5. #education      – Ausbildungs-Timeline
+    6. #experience     – Berufserfahrung & Berufserkundungen
+    7. #skills         – Kenntnisse, Sprachen, Interessen
+    8. #contact        – Kontakt per E-Mail-Button
+    9. <script>        – Navigation, Scroll-Reveal, Smooth-Scroll
+  ============================================================
+-->
+<html lang="de">
+<head>
+  <!-- ─────────────────────────────────────────────────────
+       META & SEO
+       charset:  UTF-8 für Umlaute (ä ö ü)
+       viewport: Mobile-first Skalierung
+  ───────────────────────────────────────────────────────── -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Jaron Sommer – Schüler aus Wiedlisbach, auf der Suche nach einer Lehrstelle als Mediamatiker oder Zeichner EFZ." />
+  <meta name="author" content="Jaron Sommer" />
+  <title>Jaron Sommer</title>
+
+  <!-- ─────────────────────────────────────────────────────
+       GOOGLE FONTS
+       DM Serif Display – elegante Serifen-Schrift für Titel
+       DM Sans          – klare, moderne Schrift für Fliesstext
+  ───────────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════════════════════
+       CSS CUSTOM PROPERTIES (Design-Tokens)
+       Alle Farben, Abstände und Typografie zentral definiert.
+       Änderungen hier wirken sich auf die gesamte Seite aus.
+    ══════════════════════════════════════════════════════ */
+    :root {
+      /* Farben */
+      --white:      #ffffff;
+      --off-white:  #f7f7f5;       /* Hintergrund Sektionen */
+      --ink:        #111110;       /* Haupttextfarbe */
+      --ink-light:  #6b6b65;       /* Sekundärtext / Labels */
+      --ink-faint:  #c8c8c2;       /* Trennlinien, Borders */
+      --accent:     #2b5ce6;       /* Blau – Akzentfarbe */
+      --accent-bg:  #eef2fd;       /* Sehr helles Blau für Tags */
+
+      /* Typografie */
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-sans:  'DM Sans', system-ui, sans-serif;
+
+      /* Abstände */
+      --space-xs:   0.5rem;
+      --space-sm:   1rem;
+      --space-md:   2rem;
+      --space-lg:   4rem;
+      --space-xl:   7rem;
+
+      /* Layout */
+      --max-width:  920px;
+      --radius-sm:  6px;
+      --radius-md:  12px;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       RESET & BASE
+       Konsistente Darstellung über alle Browser.
+    ══════════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;          /* Sanftes Scrollen bei Anker-Links */
+      -webkit-text-size-adjust: 100%;   /* Verhindert Auto-Zoom auf iOS */
+    }
+
+    body {
+      background-color: var(--white);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       UTILITY KLASSEN
+    ══════════════════════════════════════════════════════ */
+
+    /* Seitenbreite zentrieren */
+    .container {
+      max-width: var(--max-width);
+      margin-inline: auto;
+      padding-inline: var(--space-md);
+    }
+
+    /* Dezente Trennlinie zwischen Sektionen */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--ink-faint);
+      margin: 0;
+    }
+
+    /* Oberer Label-Text über Sektionsüberschriften */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Sektionsüberschrift H2 */
+    h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-md);
+    }
+
+    /* Scroll-Reveal: Elemente starten unsichtbar, JS fügt .visible hinzu */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       NAVIGATION
+       Fixiert am oberen Rand, mit Blur-Effekt beim Scrollen.
+       Klasse .scrolled wird per JS gesetzt.
+    ══════════════════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    /* Rahmen sichtbar sobald gescrollt */
+    #nav.scrolled {
+      border-color: var(--ink-faint);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin-inline: auto;
+      padding: 1.1rem var(--space-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo / Name links in der Nav */
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    /* Desktop-Links rechts */
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink-light);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    /* Hamburger-Button – nur sichtbar auf Mobile */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--ink);
+      transition: opacity 0.2s;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       HERO-SEKTION
+       Grosser Einstiegsbereich mit Name, Berufswunsch & CTA.
+    ══════════════════════════════════════════════════════ */
+    #hero {
+      min-height: 100svh;           /* svh = safe viewport height (iOS-fix) */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-xl) var(--space-md) var(--space-lg);
+      border-bottom: 1px solid var(--ink-faint);
+      /* Feines diagonales Linienmuster als Hintergrundtextur */
+      background-image: repeating-linear-gradient(
+        135deg,
+        transparent,
+        transparent 40px,
+        rgba(0,0,0,0.018) 40px,
+        rgba(0,0,0,0.018) 41px
+      );
+    }
+
+    .hero-content {
+      max-width: var(--max-width);
+      margin-inline: auto;
+      width: 100%;
+    }
+
+    /* Kleines Badge oben */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--ink-faint);
+      border-radius: 100px;
+      padding: 5px 14px 5px 10px;
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    /* Pulsierender grüner Punkt im Badge */
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Hauptüberschrift */
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+      animation: fadeUp 0.5s 0.08s ease both;
+    }
+
+    /* Kursiver, farbiger Unterteil des Titels */
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* Beschreibungstext unter dem Titel */
+    .hero-desc {
+      margin-top: 1.5rem;
+      max-width: 520px;
+      color: var(--ink-light);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      animation: fadeUp 0.5s 0.16s ease both;
+    }
+
+    /* Aktions-Buttons */
+    .hero-actions {
+      margin-top: 2.25rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.5s 0.24s ease both;
+    }
+
+    /* Primärer Button (gefüllt) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.7rem 1.4rem;
+      border-radius: 100px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.18s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
+    }
+    .btn-primary:hover {
+      background: #333;
+    }
+
+    /* Sekundärer Button (umrandet) */
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--ink-faint);
+    }
+    .btn-outline:hover {
+      border-color: var(--ink-light);
+    }
+
+    /* Einblend-Animation von unten */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ALLGEMEINE SEKTION
+    ══════════════════════════════════════════════════════ */
+    .section {
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    /* Hellgrauer Hintergrund für alternierte Sektionen */
+    .section--alt {
+      background: var(--off-white);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ABOUT-SEKTION
+       Zweispaltig: Beschreibung links, Stärken-Grid rechts.
+    ══════════════════════════════════════════════════════ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--ink-light);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+
+    /* Karten für Stärken */
+    .strength-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .strength-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--ink-faint);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      transition: border-color 0.2s;
+    }
+    .strength-item:hover {
+      border-color: var(--accent);
+    }
+
+    .strength-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .strength-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .strength-desc {
+      font-size: 0.82rem;
+      color: var(--ink-light);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       TIMELINE
+       Vertikale Zeitleiste für Ausbildung & Erfahrung.
+       ::before erzeugt die senkrechte Linie.
+    ══════════════════════════════════════════════════════ */
+    .timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Vertikale Linie */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;         /* Mittig unter dem Punkt */
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: var(--ink-faint);
+    }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 1rem;
+      padding-bottom: 2.25rem;
+    }
+
+    /* Runder Punkt auf der Timeline-Linie */
+    .tl-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--ink-faint);
+      margin-top: 5px;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .tl-item:hover .tl-dot {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .tl-date {
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .tl-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .tl-sub {
+      font-size: 0.84rem;
+      color: var(--ink-light);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ERFAHRUNGS-SEKTION
+       Zweispaltig: Arbeit links, Berufserkundungen rechts.
+    ══════════════════════════════════════════════════════ */
+    .exp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .exp-col-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-light);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SKILLS-SEKTION
+       Drei Blöcke: Sprachen, IT-Tools, Interessen/Hobbys.
+    ══════════════════════════════════════════════════════ */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .skill-block-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-light);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--ink-faint);
+    }
+
+    /* Sprach-Einträge mit Level-Balken */
+    .lang-entry {
+      margin-bottom: 1.1rem;
+    }
+
+    .lang-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.35rem;
+    }
+
+    .lang-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .lang-level {
+      font-size: 0.75rem;
+      color: var(--ink-light);
+    }
+
+    /* Fortschrittsbalken für Sprachniveau */
+    .lang-bar-track {
+      height: 3px;
+      background: var(--ink-faint);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .lang-bar-fill {
+      height: 100%;
+      background: var(--ink);
+      border-radius: 100px;
+      /* Animation: Balken fährt beim Einblenden ein */
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.7s ease 0.3s;
+    }
+    .reveal.visible .lang-bar-fill {
+      transform: scaleX(1);
+    }
+
+    /* Pill-Tags für IT-Kenntnisse und Hobbys */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--ink-faint);
+      color: var(--ink);
+      background: var(--white);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .tag:hover {
+      border-color: var(--ink-light);
+    }
+
+    /* Blauer Akzent-Tag (z.B. für Favoriten) */
+    .tag--accent {
+      background: var(--accent-bg);
+      border-color: transparent;
+      color: var(--accent);
+    }
+
+    /* Kleines Fahrausweis-Badge */
+    .licence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 1rem;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--off-white);
+      border: 1px solid var(--ink-faint);
+      font-size: 0.8rem;
+      color: var(--ink-light);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       KONTAKT-SEKTION
+       Bewusst minimalistisch: nur E-Mail-Button, keine
+       privaten Kontaktdaten auf der öffentlichen Seite.
+    ══════════════════════════════════════════════════════ */
+    #contact {
+      text-align: center;
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    .contact-intro {
+      max-width: 480px;
+      margin-inline: auto;
+      color: var(--ink-light);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Grosser E-Mail-Button */
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.9rem 2rem;
+      border-radius: 100px;
+      background: var(--accent);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s, transform 0.18s;
+    }
+    .btn-contact:hover {
+      background: #1e4ad4;
+      transform: translateY(-2px);
+    }
+
+    /* Hinweistext unter dem Button */
+    .contact-note {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════ */
+    footer {
+      padding: 1.5rem var(--space-md);
+      border-top: 1px solid var(--ink-faint);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer-text {
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+    }
+
+    .footer-link {
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+    .footer-link:hover {
+      color: var(--ink-light);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       RESPONSIVE / MOBILE
+       Breakpoint: 700px
+       - Navigation: Hamburger-Menü
+       - Zweispaltige Grids → einspaltlg
+    ══════════════════════════════════════════════════════ */
+    @media (max-width: 700px) {
+      /* Hamburger-Button einblenden, Desktop-Links ausblenden */
+      .hamburger { display: flex; }
+
+      .nav-links {
+        display: none;                 /* Standardmässig verborgen */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-bottom: 1px solid var(--ink-faint);
+        flex-direction: column;
+        padding: 1.25rem var(--space-md);
+        gap: 1rem;
+      }
+
+      /* Klasse .open wird per JS gesetzt beim Klick auf Hamburger */
+      .nav-links.open { display: flex; }
+
+      /* Grids auf eine Spalte reduzieren */
+      .about-grid,
+      .exp-grid,
+      .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .section { padding: 3rem 1.25rem; }
+
+      #hero { padding: 6rem 1.25rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+       NAVIGATION
+       - .nav-logo: Link zurück nach oben
+       - .nav-links: Anker-Links zu den Sektionen
+       - .hamburger: Mobile Menü-Toggle (JS-gesteuert)
+  ══════════════════════════════════════════════════ -->
+  <nav id="nav" role="navigation" aria-label="Hauptnavigation">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">Jaron Sommer</a>
+
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="#about">Über mich</a></li>
+        <li><a href="#education">Ausbildung</a></li>
+        <li><a href="#experience">Erfahrung</a></li>
+        <li><a href="#skills">Kenntnisse</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+
+      <!-- Hamburger: drei horizontale Striche -->
+      <button class="hamburger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════════════
+       HERO-SEKTION
+       Erster Eindruck: Name, Berufswunsch, zwei Buttons.
+  ══════════════════════════════════════════════════ -->
+  <section id="hero" aria-label="Einleitung">
+    <div class="hero-content">
+
+      <!-- Status-Badge: zeigt Verfügbarkeit an -->
+      <div class="hero-badge">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        Auf Lehrstellensuche · Start 2027
+      </div>
+
+      <!-- Haupttitel -->
+      <h1 class="hero-title">
+        Jaron<br />
+        <em>Sommer</em>
+      </h1>
+
+      <!-- Kurzbeschreibung -->
+      <p class="hero-desc">
+        Schüler im Sekundar-Niveau am OZW Wiedlisbach.<br />
+        Interessiert an Mediamatik, Design und digitaler Technologie.
+      </p>
+
+      <!-- Call-to-Action Buttons -->
+      <div class="hero-actions">
+        <a href="#experience" class="btn btn-primary">Berufserfahrung ↓</a>
+        <a href="#contact"    class="btn btn-outline">Kontakt aufnehmen</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════════
+       ÜBER MICH
+       Zweispaltig: Kurztext + 4 Stärken-Karten
+  ══════════════════════════════════════════════════ -->
+  <section id="about" class="section reveal" aria-label="Über mich">
+    <div class="container">
+      <p class="section-label">Über mich</p>
+      <h2>Wer bin ich?</h2>
+
+      <div class="about-grid">
+
+        <!-- Linke Spalte: Freitext -->
+        <div class="about-text">
+          <p>
+            Ich bin Jaron Sommer, 14 Jahre alt, und wohne in Wiedlisbach im Kanton Bern.
+            Seit der 7. Klasse besuche ich das Oberstufenzentrum Wiedlisbach auf dem
+            Sekundar-Niveau.
+          </p>
+          <p>
+            Aufgewachsen mit einem Vater, der Softwareentwickler ist, bin ich früh mit
+            Technologie in Berührung gekommen. Nach mehreren Zukunftstagen und Infoanlässen
+            interessiere ich mich besonders für Mediamatik und Zeichnen.
+          </p>
+          <p>
+            Neben der Schule arbeite ich wöchentlich auf dem Bauernhof Walki in Wiedlisbach –
+            das hat mir Verlässlichkeit, Eigenverantwortung und echten Arbeitseinsatz beigebracht.
+          </p>
+        </div>
+
+        <!-- Rechte Spalte: Stärken -->
+        <div class="strength-list">
+
+          <div class="strength-item">
+            <span class="strength-icon">💻</span>
+            <div>
+              <div class="strength-title">Technik-Affinität</div>
+              <div class="strength-desc">Gute Kenntnisse in Microsoft Office 365; Grundkenntnisse Zehnfingersystem</div>
+            </div>
+          </div>
+
+          <div class="strength-item">
+            <span class="strength-icon">🌱</span>
+            <div>
+              <div class="strength-title">Zuverlässig & fleissig</div>
+              <div class="strength-desc">Wöchentliche Arbeit auf dem Bauernhof – auch bei Wind und Wetter</div>
+            </div>
+          </div>
+
+          <div class="strength-item">
+            <span class="strength-icon">🎯</span>
+            <div>
+              <div class="strength-title">Zielstrebig</div>
+              <div class="strength-desc">5 Zukunftstage und Infoanlässe für die Berufswahl absolviert</div>
+            </div>
+          </div>
+
+          <div class="strength-item">
+            <span class="strength-icon">🤝</span>
+            <div>
+              <div class="strength-title">Teamfähig</div>
+              <div class="strength-desc">FC Wangen an der Aare C-Junioren – Teamgeist täglich gelebt</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════════
+       AUSBILDUNG
+       Chronologische Timeline von Kindergarten bis heute.
+  ══════════════════════════════════════════════════ -->
+  <section id="education" class="section section--alt reveal" aria-label="Ausbildung">
+    <div class="container">
+      <p class="section-label">Bildungsweg</p>
+      <h2>Ausbildung</h2>
+
+      <div class="timeline" role="list">
+
+        <!-- Eintrag: Aktuell -->
+        <div class="tl-item" role="listitem">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div>
+            <div class="tl-date">2024 – Heute</div>
+            <div class="tl-title">Oberstufenzentrum Wiedlisbach (OZW)</div>
+            <div class="tl-sub">7.–8. Klasse · Sekundar-Niveau</div>
+          </div>
+        </div>
+
+        <!-- Eintrag: Primarschule -->
+        <div class="tl-item" role="listitem">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div>
+            <div class="tl-date">2019 – 2024</div>
+            <div class="tl-title">Primarschule Wiedlisbach</div>
+            <div class="tl-sub">1.–6. Klasse</div>
+          </div>
+        </div>
+
+        <!-- Eintrag: Kindergarten -->
+        <div class="tl-item" role="listitem">
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div>
+            <div class="tl-date">2017 – 2019</div>
+            <div class="tl-title">Kindergarten Riebeli, Wiedlisbach</div>
+            <div class="tl-sub">Vorschulstufe</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════════
+       BERUFSERFAHRUNG & BERUFSWAHL
+       Links: Arbeitserfahrung | Rechts: Erkundungen
+  ══════════════════════════════════════════════════ -->
+  <section id="experience" class="section reveal" aria-label="Berufserfahrung">
+    <div class="container">
+      <p class="section-label">Praxis & Erkundung</p>
+      <h2>Erfahrungen</h2>
+
+      <div class="exp-grid">
+
+        <!-- Linke Spalte: Arbeitserfahrung -->
+        <div>
+          <p class="exp-col-title">💼 Berufserfahrung</p>
+          <div class="timeline" role="list">
+            <div class="tl-item" role="listitem">
+              <div class="tl-dot" aria-hidden="true"></div>
+              <div>
+                <div class="tl-date">Wöchentlich · Seit Schuljahr 24/25</div>
+                <div class="tl-title">Aushilfe Bauernhof Walki, Wiedlisbach</div>
+                <div class="tl-sub">
+                  Feldarbeiten, Gemüse rüsten, Hofladen auffüllen,
+                  Reinigung, Traktor fahren
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rechte Spalte: Berufserkundungen (Zukunftstage & Infoanlässe) -->
+        <div>
+          <p class="exp-col-title">🔭 Berufserkundungen</p>
+          <div class="timeline" role="list">
+
+            <div class="tl-item" role="listitem">
+              <div class="tl-dot" aria-hidden="true"></div>
+              <div>
+                <div class="tl-date">2023</div>
+                <div class="tl-title">Zukunftstag corix AG, Solothurn</div>
+                <div class="tl-sub">Applikationsentwicklung</div>
+              </div>
+            </div>
+
+            <div class="tl-item" role="listitem">
+              <div class="tl-dot" aria-hidden="true"></div>
+              <div>
+                <div class="tl-date">2024</div>
+                <div class="tl-title">Zukunftstag PostFinance, Bern</div>
+                <div class="tl-sub">Mediamatiker</div>
+              </div>
+            </div>
+
+            <div class="tl-item" role="listitem">
+              <div class="tl-dot" aria-hidden="true"></div>
+              <div>
+                <div class="tl-date">2025</div>
+                <div class="tl-title">Zukunftstag Rudolf Krenger AG, Wiedlisbach</div>
+                <div class="tl-sub">Mediamatiker</div>
+              </div>
+            </div>
+
+            <div class="tl-item" role="listitem">
+              <div class="tl-dot" aria-hidden="true"></div>
+              <div>
+                <div class="tl-date">2025</div>
+                <div class="tl-title">Infoanlass GVB, Langenthal</div>
+                <div class="tl-sub">Zeichner EFZ</div>
+              </div>
+            </div>
+
+            <div class="tl-item" role="listitem">
+              <div class="tl-dot" aria-hidden="true"></div>
+              <div>
+                <div class="tl-date">2025</div>
+                <div class="tl-title">Infoanlass Bystronic, Niederönz</div>
+                <div class="tl-sub">Mediamatiker</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════════
+       KENNTNISSE
+       Drei Spalten: Sprachen, IT-Tools, Hobbys
+  ══════════════════════════════════════════════════ -->
+  <section id="skills" class="section section--alt reveal" aria-label="Kenntnisse">
+    <div class="container">
+      <p class="section-label">Kompetenzen</p>
+      <h2>Kenntnisse</h2>
+
+      <div class="skills-grid">
+
+        <!-- Spalte 1: Sprachen mit Fortschrittsbalken -->
+        <div>
+          <p class="skill-block-title">Sprachen</p>
+
+          <!-- Schweizerdeutsch – Muttersprache = 100% -->
+          <div class="lang-entry">
+            <div class="lang-row">
+              <span class="lang-name">Schweizerdeutsch</span>
+              <span class="lang-level">Muttersprache</span>
+            </div>
+            <div class="lang-bar-track">
+              <div class="lang-bar-fill" style="width:100%"></div>
+            </div>
+          </div>
+
+          <!-- Deutsch – Schulkenntnisse ab 1. Klasse -->
+          <div class="lang-entry">
+            <div class="lang-row">
+              <span class="lang-name">Deutsch</span>
+              <span class="lang-level">Fliessend</span>
+            </div>
+            <div class="lang-bar-track">
+              <div class="lang-bar-fill" style="width:95%"></div>
+            </div>
+          </div>
+
+          <!-- Französisch – seit 3. Klasse, Sek.-Niveau -->
+          <div class="lang-entry">
+            <div class="lang-row">
+              <span class="lang-name">Französisch</span>
+              <span class="lang-level">Schulkenntnisse</span>
+            </div>
+            <div class="lang-bar-track">
+              <div class="lang-bar-fill" style="width:52%"></div>
+            </div>
+          </div>
+
+          <!-- Englisch – seit 5. Klasse, Sek.-Niveau -->
+          <div class="lang-entry">
+            <div class="lang-row">
+              <span class="lang-name">Englisch</span>
+              <span class="lang-level">Schulkenntnisse</span>
+            </div>
+            <div class="lang-bar-track">
+              <div class="lang-bar-fill" style="width:48%"></div>
+            </div>
+          </div>
+
+          <!-- Fahrausweis Badge -->
+          <div class="licence-badge">
+            🚜 Fahrausweis Kat. G · Nov. 2025
+          </div>
+        </div>
+
+        <!-- Spalte 2: IT-Tools als Tags -->
+        <div>
+          <p class="skill-block-title">IT & Tools</p>
+          <div class="tag-list">
+            <span class="tag tag--accent">Microsoft Office 365</span>
+            <span class="tag tag--accent">Zehnfingersystem</span>
+            <span class="tag">Windows</span>
+            <span class="tag">Internet-Recherche</span>
+            <span class="tag">Grundlagen Programmierung</span>
+          </div>
+        </div>
+
+        <!-- Spalte 3: Hobbys & Interessen -->
+        <div>
+          <p class="skill-block-title">Interessen & Hobbys</p>
+          <div class="tag-list">
+            <span class="tag">⚽ Fussball</span>
+            <span class="tag">🎮 Gaming</span>
+            <span class="tag">🚜 Traktor fahren</span>
+            <span class="tag">🌿 Feldarbeit</span>
+            <span class="tag">Minecraft</span>
+            <span class="tag">Rocket League</span>
+            <span class="tag">Fortnite</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <hr class="divider" />
+
+
+  <!-- ══════════════════════════════════════════════════
+       KONTAKT
+       Keine privaten Daten öffentlich sichtbar.
+       Klick auf den Button öffnet den Standard-E-Mail-Client
+       mit vorausgefülltem Betreff ("Lehrstellenanfrage").
+  ══════════════════════════════════════════════════ -->
+  <section id="contact" class="reveal" aria-label="Kontakt">
+    <div class="container">
+
+      <p class="section-label">Kontakt</p>
+      <h2>Lass uns reden</h2>
+
+      <p class="contact-intro">
+        Du bist ein Lehrbetrieb oder möchtest mich kennenlernen?
+        Ich freue mich über deine Nachricht – schreib mir einfach eine E-Mail.
+      </p>
+
+      <!--
+        mailto-Link: öffnet den E-Mail-Client des Nutzers.
+        subject und body sind vorausgefüllt, um den Einstieg zu erleichtern.
+        Die E-Mail-Adresse ist hier kodiert (nicht im Klartext indexierbar)
+        via JavaScript – siehe Script-Block unten.
+      -->
+      <a id="mailBtn" href="#" class="btn-contact" aria-label="E-Mail schreiben">
+        ✉&nbsp; E-Mail schreiben
+      </a>
+
+      <p class="contact-note">Öffnet deinen E-Mail-Client</p>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <span class="footer-text">© 2026 Jaron Sommer</span>
+    <a href="https://github.com/jaronsommer" class="footer-link" target="_blank" rel="noopener noreferrer">
+      <!-- GitHub-Icon (inline SVG, keine externe Abhängigkeit) -->
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+                 -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+                 .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+                 -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0
+                 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82
+                 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
+                 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      jaronsommer
+    </a>
+  </footer>
+
+
+  <!-- ══════════════════════════════════════════════════
+       JAVASCRIPT
+       Drei Funktionen:
+       1. Hamburger-Menü Toggle
+       2. Nav-Border beim Scrollen (Klasse .scrolled)
+       3. Scroll-Reveal (IntersectionObserver)
+       4. Mailto-Link mit obfuskierter E-Mail
+          (Schutz vor Spam-Bots die den HTML-Quelltext lesen)
+  ══════════════════════════════════════════════════ -->
+  <script>
+    /* ── 1. Hamburger-Menü ─────────────────────────────
+       Klick auf Burger togglet Klasse .open auf #navLinks.
+       aria-expanded wird für Screenreader aktualisiert.
+    ──────────────────────────────────────────────────── */
+    const burger   = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+
+    burger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      burger.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Menü schliessen sobald ein Link geklickt wird
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+
+    /* ── 2. Nav-Border beim Scrollen ───────────────────
+       Fügt Klasse .scrolled hinzu sobald > 10px gescrollt.
+    ──────────────────────────────────────────────────── */
+    const nav = document.getElementById('nav');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+
+    /* ── 3. Scroll-Reveal ──────────────────────────────
+       IntersectionObserver beobachtet alle .reveal Elemente.
+       Sobald sie im Viewport sichtbar sind, wird .visible
+       hinzugefügt → CSS-Transition blendet sie ein.
+    ──────────────────────────────────────────────────── */
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // Einmal eingeblendet → nicht mehr beobachten
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 }  // 8% des Elements muss sichtbar sein
+    );
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+
+    /* ── 4. Mailto-Link (Spam-Schutz) ──────────────────
+       Die E-Mail-Adresse wird nicht im Klartext im HTML
+       gespeichert, sondern hier per JS zusammengesetzt.
+       Einfache Hürde gegen automatisierte Spam-Bots.
+    ──────────────────────────────────────────────────── */
+    (function () {
+      // E-Mail in Teile aufgeteilt → wird per JS zusammengesetzt
+      const parts = ['jaron.sommer.ch', '@', 'icloud.com'];
+      const email  = parts.join('');
+      const subject = encodeURIComponent('Lehrstellenanfrage');
+      const body    = encodeURIComponent(
+        'Hallo Jaron\n\nIch bin auf dein Portfolio gestossen und würde mich gerne mit dir in Verbindung setzen.\n\nFreundliche Grüsse'
+      );
+
+      const btn = document.getElementById('mailBtn');
+      if (btn) {
+        btn.href = `mailto:${email}?subject=${subject}&body=${body}`;
+      }
+    })();
+  </script>
+
+</body>
+</html>

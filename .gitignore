@@ -1,0 +1,70 @@
+# ══════════════════════════════════════════════════
+# .gitignore – Jaron Sommer Portfolio
+# ══════════════════════════════════════════════════
+# Definiert welche Dateien NICHT ins Git-Repository
+# eingecheckt werden sollen.
+# ══════════════════════════════════════════════════
+
+
+# ── Betriebssystem-Dateien ──────────────────────────
+# macOS: versteckte Metadaten-Dateien
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows: Thumbnail-Cache und Desktop-Einstellungen
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+
+# ── IntelliJ IDEA / JetBrains ───────────────────────
+# IDE-Konfiguration (lokal, nicht projektspezifisch)
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+
+# ── VS Code ─────────────────────────────────────────
+.vscode/
+*.code-workspace
+
+
+# ── Node.js (falls später npm-Tools verwendet werden)─
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.npm
+
+
+# ── Temporäre Dateien ───────────────────────────────
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+
+
+# ── Persönliche / private Dokumente ─────────────────
+# Bewerbungsunterlagen gehören NICHT ins öffentliche Repo
+*.pdf
+Lebenslauf*
+Beilagen*
+Bewerbung*
+
+
+# ── Umgebungsvariablen ───────────────────────────────
+# Falls später mal eine .env-Datei genutzt wird
+.env
+.env.local
+.env.*.local
