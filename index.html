@@ -100,7 +100,7 @@
       background-color: var(--white);
       color: var(--ink);
       font-family: var(--font-sans),serif;
-      font-size: 16px;
+      font-size: 18px;        /* bumped from 16px for better desktop readability */
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
@@ -135,7 +135,7 @@
 
     /* Oberer Label-Text über Sektionsüberschriften */
     .section-label {
-      font-size: 0.7rem;
+      font-size: 0.8rem;        /* was 0.7rem */
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -146,7 +146,7 @@
     /* Sektionsüberschrift H2 */
     h2 {
       font-family: var(--font-serif),serif;
-      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      font-size: clamp(2.1rem, 4vw, 3rem);   /* was clamp(1.9rem, 4vw, 2.6rem) */
       font-weight: 400;
       line-height: 1.15;
       letter-spacing: -0.02em;
@@ -215,9 +215,69 @@
       font-weight: 500;
       color: var(--ink-light);
       transition: color 0.2s;
+      position: relative;
     }
     .nav-links a:hover {
       color: var(--ink);
+    }
+
+    /* Active nav link – highlighted while user is in that section.
+       Class .active is toggled by IntersectionObserver in JS. */
+    .nav-links a.active {
+      color: var(--accent);
+    }
+    /* Small dot indicator below the active link */
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       NEXT-SECTION SCROLL BUTTON
+       A small round arrow pinned to the bottom-right of
+       every section. Clicking scrolls to the next section.
+       Sections need position:relative (added via .section-wrap).
+    ══════════════════════════════════════════════════════ */
+    .section-wrap {
+      position: relative;  /* anchor for absolute .next-btn */
+    }
+
+    .next-btn {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1px solid var(--ink-faint);
+      color: var(--ink-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+      z-index: 10;
+    }
+    .next-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(43,92,230,0.12);
+    }
+    /* Slightly different background on tinted sections */
+    .section--alt .next-btn {
+      background: var(--off-white);
     }
 
     /* Hamburger-Button – nur sichtbar auf Mobile */
@@ -251,11 +311,11 @@
       border-bottom: 1px solid var(--ink-faint);
       /* Feines diagonales Linienmuster als Hintergrundtextur */
       background-image: repeating-linear-gradient(
-        135deg,
-        transparent,
-        transparent 40px,
-        rgba(0,0,0,0.018) 40px,
-        rgba(0,0,0,0.018) 41px
+              135deg,
+              transparent,
+              transparent 40px,
+              rgba(0,0,0,0.018) 40px,
+              rgba(0,0,0,0.018) 41px
       );
     }
 
@@ -263,6 +323,42 @@
       max-width: var(--max-width);
       margin-inline: auto;
       width: 100%;
+      /* Two columns: text left, photo right */
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    /* Left column: all text content */
+    .hero-text { /* no extra styles needed, grid child */ }
+
+    /* Right column: photo container */
+    .hero-photo {
+      position: relative;
+    }
+
+    /* The portrait image itself.
+       object-fit: cover keeps the face centred
+       regardless of the image's original dimensions. */
+    .hero-photo img {
+      width: 100%;
+      aspect-ratio: 3 / 4;       /* portrait proportion */
+      object-fit: cover;
+      object-position: center top; /* favour the face */
+      border-radius: var(--radius-md);
+      border: 1px solid var(--ink-faint);
+      display: block;
+    }
+
+    /* Subtle decorative frame offset behind the photo */
+    .hero-photo::before {
+      content: '';
+      position: absolute;
+      inset: 10px -10px -10px 10px;
+      border: 1px solid var(--ink-faint);
+      border-radius: var(--radius-md);
+      z-index: -1;
     }
 
     /* Kleines Badge oben */
@@ -743,6 +839,18 @@
         gap: 2rem;
       }
 
+      /* Hero: stack text above photo on mobile */
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      /* Show photo before text on mobile for visual impact */
+      .hero-photo { order: -1; }
+      .hero-photo img { aspect-ratio: 4 / 3; max-height: 260px; }
+      .hero-photo::before { display: none; }
+
+      body { font-size: 16px; } /* slightly smaller on mobile is fine */
+
       .section { padding: 3rem 1.25rem; }
 
       #hero { padding: 6rem 1.25rem 3rem; }
@@ -751,40 +859,44 @@
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════════════
-       NAVIGATION
-       - .nav-logo: Link zurück nach oben
-       - .nav-links: Anker-Links zu den Sektionen
-       - .hamburger: Mobile Menü-Toggle (JS-gesteuert)
-  ══════════════════════════════════════════════════ -->
-  <nav id="nav" role="navigation" aria-label="Hauptnavigation">
-    <div class="nav-inner">
-      <a href="#hero" class="nav-logo">Jaron Sommer</a>
+<!-- ══════════════════════════════════════════════════
+     NAVIGATION
+     - .nav-logo: Link zurück nach oben
+     - .nav-links: Anker-Links zu den Sektionen
+     - .hamburger: Mobile Menü-Toggle (JS-gesteuert)
+══════════════════════════════════════════════════ -->
+<nav id="nav" role="navigation" aria-label="Hauptnavigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Jaron Sommer</a>
 
-      <ul class="nav-links" id="navLinks" role="list">
-        <li><a href="#about">Über mich</a></li>
-        <li><a href="#education">Ausbildung</a></li>
-        <li><a href="#experience">Erfahrung</a></li>
-        <li><a href="#skills">Kenntnisse</a></li>
-        <li><a href="#contact">Kontakt</a></li>
-      </ul>
+    <ul class="nav-links" id="navLinks" role="list">
+      <li><a href="#about">Über mich</a></li>
+      <li><a href="#education">Ausbildung</a></li>
+      <li><a href="#experience">Erfahrung</a></li>
+      <li><a href="#skills">Kenntnisse</a></li>
+      <li><a href="#contact">Kontakt</a></li>
+    </ul>
 
-      <!-- Hamburger: drei horizontale Striche -->
-      <button class="hamburger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </nav>
+    <!-- Hamburger: drei horizontale Striche -->
+    <button class="hamburger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
 
 
-  <!-- ══════════════════════════════════════════════════
-       HERO-SEKTION
-       Erster Eindruck: Name, Berufswunsch, zwei Buttons.
-  ══════════════════════════════════════════════════ -->
-  <section id="hero" aria-label="Einleitung">
-    <div class="hero-content">
+<!-- ══════════════════════════════════════════════════
+     HERO-SEKTION
+     Erster Eindruck: Name, Berufswunsch, zwei Buttons.
+══════════════════════════════════════════════════ -->
+<section id="hero" class="section-wrap" aria-label="Einleitung">
+  <a href="#about" class="next-btn" aria-label="Weiter zu: Über mich">↓</a>
+  <div class="hero-content">
+
+    <!-- Left column: text -->
+    <div class="hero-text">
 
       <!-- Status-Badge: zeigt Verfügbarkeit an -->
       <div class="hero-badge">
@@ -811,373 +923,384 @@
       </div>
 
     </div>
-  </section>
 
-
-  <hr class="divider" />
-
-
-  <!-- ══════════════════════════════════════════════════
-       ÜBER MICH
-       Zweispaltig: Kurztext + 4 Stärken-Karten
-  ══════════════════════════════════════════════════ -->
-  <section id="about" class="section reveal" aria-label="Über mich">
-    <div class="container">
-      <p class="section-label">Über mich</p>
-      <h2>Wer bin ich?</h2>
-
-      <div class="about-grid">
-
-        <!-- Linke Spalte: Freitext -->
-        <div class="about-text">
-          <p>
-            Ich bin Jaron Sommer, 14 Jahre alt, und wohne in Wiedlisbach im Kanton Bern.
-            Seit der 7. Klasse besuche ich das Oberstufenzentrum Wiedlisbach auf dem
-            Sekundar-Niveau.
-          </p>
-          <p>
-            Aufgewachsen mit einem Vater, der Softwareentwickler ist, bin ich früh mit
-            Technologie in Berührung gekommen. Nach mehreren Zukunftstagen und Infoanlässen
-            interessiere ich mich besonders für Mediamatik und Zeichnen.
-          </p>
-          <p>
-            Neben der Schule arbeite ich wöchentlich auf dem Bauernhof Walki in Wiedlisbach –
-            das hat mir Verlässlichkeit, Eigenverantwortung und echten Arbeitseinsatz beigebracht.
-          </p>
-        </div>
-
-        <!-- Rechte Spalte: Stärken -->
-        <div class="strength-list">
-
-          <div class="strength-item">
-            <span class="strength-icon">💻</span>
-            <div>
-              <div class="strength-title">Technik-Affinität</div>
-              <div class="strength-desc">Gute Kenntnisse in Microsoft Office 365; Grundkenntnisse Zehnfingersystem</div>
-            </div>
-          </div>
-
-          <div class="strength-item">
-            <span class="strength-icon">🌱</span>
-            <div>
-              <div class="strength-title">Zuverlässig & fleissig</div>
-              <div class="strength-desc">Wöchentliche Arbeit auf dem Bauernhof – auch bei Wind und Wetter</div>
-            </div>
-          </div>
-
-          <div class="strength-item">
-            <span class="strength-icon">🎯</span>
-            <div>
-              <div class="strength-title">Zielstrebig</div>
-              <div class="strength-desc">5 Zukunftstage und Infoanlässe für die Berufswahl absolviert</div>
-            </div>
-          </div>
-
-          <div class="strength-item">
-            <span class="strength-icon">🤝</span>
-            <div>
-              <div class="strength-title">Teamfähig</div>
-              <div class="strength-desc">FC Wangen an der Aare C-Junioren – Teamgeist täglich gelebt</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+    <!-- Right column: portrait photo -->
+    <div class="hero-photo">
+      <img src="images/Jaron.jpg" alt="Jaron Sommer" />
     </div>
-  </section>
+
+  </div>
+</section>
 
 
-  <hr class="divider" />
+<hr class="divider" />
 
 
-  <!-- ══════════════════════════════════════════════════
-       AUSBILDUNG
-       Chronologische Timeline von Kindergarten bis heute.
-  ══════════════════════════════════════════════════ -->
-  <section id="education" class="section section--alt reveal" aria-label="Ausbildung">
-    <div class="container">
-      <p class="section-label">Bildungsweg</p>
-      <h2>Ausbildung</h2>
+<!-- ══════════════════════════════════════════════════
+     ÜBER MICH
+     Zweispaltig: Kurztext + 4 Stärken-Karten
+══════════════════════════════════════════════════ -->
+<section id="about" class="section section-wrap reveal" aria-label="Über mich">
+  <a href="#education" class="next-btn" aria-label="Weiter zu: Ausbildung">↓</a>
+  <div class="container">
+    <p class="section-label">Über mich</p>
+    <h2>Wer bin ich?</h2>
 
-      <div class="timeline" role="list">
+    <div class="about-grid">
 
-        <!-- Eintrag: Aktuell -->
-        <div class="tl-item" role="listitem">
-          <div class="tl-dot" aria-hidden="true"></div>
+      <!-- Linke Spalte: Freitext -->
+      <div class="about-text">
+        <p>
+          Ich bin Jaron Sommer, 14 Jahre alt, und wohne in Wiedlisbach im Kanton Bern.
+          Seit der 7. Klasse besuche ich das Oberstufenzentrum Wiedlisbach auf dem
+          Sekundar-Niveau.
+        </p>
+        <p>
+          Aufgewachsen mit einem Vater, der Softwareentwickler ist, bin ich früh mit
+          Technologie in Berührung gekommen. Nach mehreren Zukunftstagen und Infoanlässen
+          interessiere ich mich besonders für Mediamatik und Zeichnen.
+        </p>
+        <p>
+          Neben der Schule arbeite ich wöchentlich auf dem Bauernhof Walki in Wiedlisbach –
+          das hat mir Verlässlichkeit, Eigenverantwortung und echten Arbeitseinsatz beigebracht.
+        </p>
+      </div>
+
+      <!-- Rechte Spalte: Stärken -->
+      <div class="strength-list">
+
+        <div class="strength-item">
+          <span class="strength-icon">💻</span>
           <div>
-            <div class="tl-date">2024 – Heute</div>
-            <div class="tl-title">Oberstufenzentrum Wiedlisbach (OZW)</div>
-            <div class="tl-sub">7.–8. Klasse · Sekundar-Niveau</div>
+            <div class="strength-title">Technik-Affinität</div>
+            <div class="strength-desc">Gute Kenntnisse in Microsoft Office 365; Grundkenntnisse Zehnfingersystem</div>
           </div>
         </div>
 
-        <!-- Eintrag: Primarschule -->
-        <div class="tl-item" role="listitem">
-          <div class="tl-dot" aria-hidden="true"></div>
+        <div class="strength-item">
+          <span class="strength-icon">🌱</span>
           <div>
-            <div class="tl-date">2019 – 2024</div>
-            <div class="tl-title">Primarschule Wiedlisbach</div>
-            <div class="tl-sub">1.–6. Klasse</div>
+            <div class="strength-title">Zuverlässig & fleissig</div>
+            <div class="strength-desc">Wöchentliche Arbeit auf dem Bauernhof – auch bei Wind und Wetter</div>
           </div>
         </div>
 
-        <!-- Eintrag: Kindergarten -->
-        <div class="tl-item" role="listitem">
-          <div class="tl-dot" aria-hidden="true"></div>
+        <div class="strength-item">
+          <span class="strength-icon">🎯</span>
           <div>
-            <div class="tl-date">2017 – 2019</div>
-            <div class="tl-title">Kindergarten Riebeli, Wiedlisbach</div>
-            <div class="tl-sub">Vorschulstufe</div>
+            <div class="strength-title">Zielstrebig</div>
+            <div class="strength-desc">5 Zukunftstage und Infoanlässe für die Berufswahl absolviert</div>
+          </div>
+        </div>
+
+        <div class="strength-item">
+          <span class="strength-icon">🤝</span>
+          <div>
+            <div class="strength-title">Teamfähig</div>
+            <div class="strength-desc">FC Wangen an der Aare C-Junioren – Teamgeist täglich gelebt</div>
           </div>
         </div>
 
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 
-  <hr class="divider" />
+<hr class="divider" />
 
 
-  <!-- ══════════════════════════════════════════════════
-       BERUFSERFAHRUNG & BERUFSWAHL
-       Links: Arbeitserfahrung | Rechts: Erkundungen
-  ══════════════════════════════════════════════════ -->
-  <section id="experience" class="section reveal" aria-label="Berufserfahrung">
-    <div class="container">
-      <p class="section-label">Praxis & Erkundung</p>
-      <h2>Erfahrungen</h2>
+<!-- ══════════════════════════════════════════════════
+     AUSBILDUNG
+     Chronologische Timeline von Kindergarten bis heute.
+══════════════════════════════════════════════════ -->
+<section id="education" class="section section--alt section-wrap reveal" aria-label="Ausbildung">
+  <a href="#experience" class="next-btn" aria-label="Weiter zu: Erfahrung">↓</a>
+  <div class="container">
+    <p class="section-label">Bildungsweg</p>
+    <h2>Ausbildung</h2>
 
-      <div class="exp-grid">
+    <div class="timeline" role="list">
 
-        <!-- Linke Spalte: Arbeitserfahrung -->
+      <!-- Eintrag: Aktuell -->
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot" aria-hidden="true"></div>
         <div>
-          <p class="exp-col-title">💼 Berufserfahrung</p>
-          <div class="timeline" role="list">
-            <div class="tl-item" role="listitem">
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div>
-                <div class="tl-date">Wöchentlich · Seit Schuljahr 24/25</div>
-                <div class="tl-title">Aushilfe Bauernhof Walki, Wiedlisbach</div>
-                <div class="tl-sub">
-                  Feldarbeiten, Gemüse rüsten, Hofladen auffüllen,
-                  Reinigung, Traktor fahren
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="tl-date">2024 – Heute</div>
+          <div class="tl-title">Oberstufenzentrum Wiedlisbach (OZW)</div>
+          <div class="tl-sub">7.–8. Klasse · Sekundar-Niveau</div>
         </div>
-
-        <!-- Rechte Spalte: Berufserkundungen (Zukunftstage & Infoanlässe) -->
-        <div>
-          <p class="exp-col-title">🔭 Berufserkundungen</p>
-          <div class="timeline" role="list">
-
-            <div class="tl-item" role="listitem">
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div>
-                <div class="tl-date">2023</div>
-                <div class="tl-title">Zukunftstag corix AG, Solothurn</div>
-                <div class="tl-sub">Applikationsentwicklung</div>
-              </div>
-            </div>
-
-            <div class="tl-item" role="listitem">
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div>
-                <div class="tl-date">2024</div>
-                <div class="tl-title">Zukunftstag PostFinance, Bern</div>
-                <div class="tl-sub">Mediamatiker</div>
-              </div>
-            </div>
-
-            <div class="tl-item" role="listitem">
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div>
-                <div class="tl-date">2025</div>
-                <div class="tl-title">Zukunftstag Rudolf Krenger AG, Wiedlisbach</div>
-                <div class="tl-sub">Mediamatiker</div>
-              </div>
-            </div>
-
-            <div class="tl-item" role="listitem">
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div>
-                <div class="tl-date">2025</div>
-                <div class="tl-title">Infoanlass GVB, Langenthal</div>
-                <div class="tl-sub">Zeichner EFZ</div>
-              </div>
-            </div>
-
-            <div class="tl-item" role="listitem">
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div>
-                <div class="tl-date">2025</div>
-                <div class="tl-title">Infoanlass Bystronic, Niederönz</div>
-                <div class="tl-sub">Mediamatiker</div>
-              </div>
-            </div>
-
-            <div class="tl-item" role="listitem">
-              <div class="tl-dot" aria-hidden="true"></div>
-              <div>
-                <div class="tl-date">2026</div>
-                <div class="tl-title">Infoanlass BDO, Solothurn</div>
-                <div class="tl-sub">Applikationsentwicklung, Mediamatiker</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
 
-
-  <hr class="divider" />
-
-
-  <!-- ══════════════════════════════════════════════════
-       KENNTNISSE
-       Drei Spalten: Sprachen, IT-Tools, Hobbys
-  ══════════════════════════════════════════════════ -->
-  <section id="skills" class="section section--alt reveal" aria-label="Kenntnisse">
-    <div class="container">
-      <p class="section-label">Kompetenzen</p>
-      <h2>Kenntnisse</h2>
-
-      <div class="skills-grid">
-
-        <!-- Spalte 1: Sprachen mit Fortschrittsbalken -->
+      <!-- Eintrag: Primarschule -->
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot" aria-hidden="true"></div>
         <div>
-          <p class="skill-block-title">Sprachen</p>
-
-          <!-- Schweizerdeutsch – Muttersprache = 100% -->
-          <div class="lang-entry">
-            <div class="lang-row">
-              <span class="lang-name">Schweizerdeutsch</span>
-              <span class="lang-level">Muttersprache</span>
-            </div>
-            <div class="lang-bar-track">
-              <div class="lang-bar-fill" style="width:100%"></div>
-            </div>
-          </div>
-
-          <!-- Deutsch – Schulkenntnisse ab 1. Klasse -->
-          <div class="lang-entry">
-            <div class="lang-row">
-              <span class="lang-name">Deutsch</span>
-              <span class="lang-level">Fliessend</span>
-            </div>
-            <div class="lang-bar-track">
-              <div class="lang-bar-fill" style="width:95%"></div>
-            </div>
-          </div>
-
-          <!-- Französisch – seit 3. Klasse, Sek.-Niveau -->
-          <div class="lang-entry">
-            <div class="lang-row">
-              <span class="lang-name">Französisch</span>
-              <span class="lang-level">Schulkenntnisse</span>
-            </div>
-            <div class="lang-bar-track">
-              <div class="lang-bar-fill" style="width:52%"></div>
-            </div>
-          </div>
-
-          <!-- Englisch – seit 5. Klasse, Sek.-Niveau -->
-          <div class="lang-entry">
-            <div class="lang-row">
-              <span class="lang-name">Englisch</span>
-              <span class="lang-level">Gute Kenntnisse</span>
-            </div>
-            <div class="lang-bar-track">
-              <div class="lang-bar-fill" style="width:70%"></div>
-            </div>
-          </div>
-
-          <!-- Fahrausweis Badge -->
-          <div class="licence-badge">
-            🚜 Fahrausweis Kat. G · Nov. 2025
-          </div>
+          <div class="tl-date">2019 – 2024</div>
+          <div class="tl-title">Primarschule Wiedlisbach</div>
+          <div class="tl-sub">1.–6. Klasse</div>
         </div>
-
-        <!-- Spalte 2: IT-Tools als Tags -->
-        <div>
-          <p class="skill-block-title">IT & Tools</p>
-          <div class="tag-list">
-            <span class="tag tag--accent">Microsoft Office 365</span>
-            <span class="tag">Zehnfingersystem</span>
-            <span class="tag">Windows</span>
-            <span class="tag">Linux (ubuntu)</span>
-            <span class="tag">Internet-Recherche</span>
-            <span class="tag">Grundlagen Programmierung</span>
-          </div>
-        </div>
-
-        <!-- Spalte 3: Hobbys & Interessen -->
-        <div>
-          <p class="skill-block-title">Interessen & Hobbys</p>
-          <div class="tag-list">
-            <span class="tag">⚽ Fussball</span>
-            <span class="tag">🎮 Gaming</span>
-            <span class="tag">Minecraft</span>
-            <span class="tag">Rocket League</span>
-            <span class="tag">Fortnite</span>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
 
-
-  <hr class="divider" />
-
-
-  <!-- ══════════════════════════════════════════════════
-       KONTAKT
-       Keine privaten Daten öffentlich sichtbar.
-       Klick auf den Button öffnet den Standard-E-Mail-Client
-       mit vorausgefülltem Betreff ("Lehrstellenanfrage").
-  ══════════════════════════════════════════════════ -->
-  <section id="contact" class="reveal" aria-label="Kontakt">
-    <div class="container">
-
-      <p class="section-label">Kontakt</p>
-      <h2>Lass uns reden</h2>
-
-      <p class="contact-intro">
-        Du bist ein Lehrbetrieb oder möchtest mich kennenlernen?
-        Ich freue mich über deine Nachricht – schreib mir einfach eine E-Mail.
-      </p>
-
-      <!--
-        mailto-Link: öffnet den E-Mail-Client des Nutzers.
-        subject und body sind vorausgefüllt, um den Einstieg zu erleichtern.
-        Die E-Mail-Adresse ist hier kodiert (nicht im Klartext indexierbar)
-        via JavaScript – siehe Script-Block unten.
-      -->
-      <a id="mailBtn" href="#" class="btn-contact" aria-label="E-Mail schreiben">
-        ✉&nbsp; E-Mail schreiben
-      </a>
-
-      <p class="contact-note">Öffnet deinen E-Mail-Client</p>
+      <!-- Eintrag: Kindergarten -->
+      <div class="tl-item" role="listitem">
+        <div class="tl-dot" aria-hidden="true"></div>
+        <div>
+          <div class="tl-date">2017 – 2019</div>
+          <div class="tl-title">Kindergarten Riebeli, Wiedlisbach</div>
+          <div class="tl-sub">Vorschulstufe</div>
+        </div>
+      </div>
 
     </div>
-  </section>
+  </div>
+</section>
 
 
-  <!-- ══════════════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════════════ -->
-  <footer role="contentinfo">
-    <span class="footer-text">© 2026 Jaron Sommer</span>
-    <a href="https://github.com/jaronsommer" class="footer-link" target="_blank" rel="noopener noreferrer">
-      <!-- GitHub-Icon (inline SVG, keine externe Abhängigkeit) -->
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+<hr class="divider" />
+
+
+<!-- ══════════════════════════════════════════════════
+     BERUFSERFAHRUNG & BERUFSWAHL
+     Links: Arbeitserfahrung | Rechts: Erkundungen
+══════════════════════════════════════════════════ -->
+<section id="experience" class="section section-wrap reveal" aria-label="Berufserfahrung">
+  <a href="#skills" class="next-btn" aria-label="Weiter zu: Kenntnisse">↓</a>
+  <div class="container">
+    <p class="section-label">Praxis & Erkundung</p>
+    <h2>Erfahrungen</h2>
+
+    <div class="exp-grid">
+
+      <!-- Linke Spalte: Arbeitserfahrung -->
+      <div>
+        <p class="exp-col-title">💼 Berufserfahrung</p>
+        <div class="timeline" role="list">
+          <div class="tl-item" role="listitem">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div>
+              <div class="tl-date">Wöchentlich · Seit Schuljahr 24/25</div>
+              <div class="tl-title">Aushilfe Bauernhof Walki, Wiedlisbach</div>
+              <div class="tl-sub">
+                Feldarbeiten, Gemüse rüsten, Hofladen auffüllen,
+                Reinigung, Traktor fahren
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rechte Spalte: Berufserkundungen (Zukunftstage & Infoanlässe) -->
+      <div>
+        <p class="exp-col-title">🔭 Berufserkundungen</p>
+        <div class="timeline" role="list">
+
+          <div class="tl-item" role="listitem">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div>
+              <div class="tl-date">2023</div>
+              <div class="tl-title">Zukunftstag corix AG, Solothurn</div>
+              <div class="tl-sub">Applikationsentwicklung</div>
+            </div>
+          </div>
+
+          <div class="tl-item" role="listitem">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div>
+              <div class="tl-date">2024</div>
+              <div class="tl-title">Zukunftstag PostFinance, Bern</div>
+              <div class="tl-sub">Mediamatiker</div>
+            </div>
+          </div>
+
+          <div class="tl-item" role="listitem">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div>
+              <div class="tl-date">2025</div>
+              <div class="tl-title">Zukunftstag Rudolf Krenger AG, Wiedlisbach</div>
+              <div class="tl-sub">Mediamatiker</div>
+            </div>
+          </div>
+
+          <div class="tl-item" role="listitem">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div>
+              <div class="tl-date">2025</div>
+              <div class="tl-title">Infoanlass GVB, Langenthal</div>
+              <div class="tl-sub">Zeichner EFZ</div>
+            </div>
+          </div>
+
+          <div class="tl-item" role="listitem">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div>
+              <div class="tl-date">2025</div>
+              <div class="tl-title">Infoanlass Bystronic, Niederönz</div>
+              <div class="tl-sub">Mediamatiker</div>
+            </div>
+          </div>
+
+          <div class="tl-item" role="listitem">
+            <div class="tl-dot" aria-hidden="true"></div>
+            <div>
+              <div class="tl-date">2026</div>
+              <div class="tl-title">Infoanlass BDO, Solothurn</div>
+              <div class="tl-sub">Applikationsentwicklung, Mediamatiker</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<hr class="divider" />
+
+
+<!-- ══════════════════════════════════════════════════
+     KENNTNISSE
+     Drei Spalten: Sprachen, IT-Tools, Hobbys
+══════════════════════════════════════════════════ -->
+<section id="skills" class="section section--alt section-wrap reveal" aria-label="Kenntnisse">
+  <a href="#contact" class="next-btn" aria-label="Weiter zu: Kontakt">↓</a>
+  <div class="container">
+    <p class="section-label">Kompetenzen</p>
+    <h2>Kenntnisse</h2>
+
+    <div class="skills-grid">
+
+      <!-- Spalte 1: Sprachen mit Fortschrittsbalken -->
+      <div>
+        <p class="skill-block-title">Sprachen</p>
+
+        <!-- Schweizerdeutsch – Muttersprache = 100% -->
+        <div class="lang-entry">
+          <div class="lang-row">
+            <span class="lang-name">Schweizerdeutsch</span>
+            <span class="lang-level">Muttersprache</span>
+          </div>
+          <div class="lang-bar-track">
+            <div class="lang-bar-fill" style="width:100%"></div>
+          </div>
+        </div>
+
+        <!-- Deutsch – Schulkenntnisse ab 1. Klasse -->
+        <div class="lang-entry">
+          <div class="lang-row">
+            <span class="lang-name">Deutsch</span>
+            <span class="lang-level">Fliessend</span>
+          </div>
+          <div class="lang-bar-track">
+            <div class="lang-bar-fill" style="width:95%"></div>
+          </div>
+        </div>
+
+        <!-- Französisch – seit 3. Klasse, Sek.-Niveau -->
+        <div class="lang-entry">
+          <div class="lang-row">
+            <span class="lang-name">Französisch</span>
+            <span class="lang-level">Schulkenntnisse</span>
+          </div>
+          <div class="lang-bar-track">
+            <div class="lang-bar-fill" style="width:52%"></div>
+          </div>
+        </div>
+
+        <!-- Englisch – seit 5. Klasse, Sek.-Niveau -->
+        <div class="lang-entry">
+          <div class="lang-row">
+            <span class="lang-name">Englisch</span>
+            <span class="lang-level">Gute Kenntnisse</span>
+          </div>
+          <div class="lang-bar-track">
+            <div class="lang-bar-fill" style="width:70%"></div>
+          </div>
+        </div>
+
+        <!-- Fahrausweis Badge -->
+        <div class="licence-badge">
+          🚜 Fahrausweis Kat. G · Nov. 2025
+        </div>
+      </div>
+
+      <!-- Spalte 2: IT-Tools als Tags -->
+      <div>
+        <p class="skill-block-title">IT & Tools</p>
+        <div class="tag-list">
+          <span class="tag tag--accent">Microsoft Office 365</span>
+          <span class="tag">Zehnfingersystem</span>
+          <span class="tag">Windows</span>
+          <span class="tag">Linux (ubuntu)</span>
+          <span class="tag">Internet-Recherche</span>
+          <span class="tag">Grundlagen Programmierung</span>
+        </div>
+      </div>
+
+      <!-- Spalte 3: Hobbys & Interessen -->
+      <div>
+        <p class="skill-block-title">Interessen & Hobbys</p>
+        <div class="tag-list">
+          <span class="tag">⚽ Fussball</span>
+          <span class="tag">🎮 Gaming</span>
+          <span class="tag">Minecraft</span>
+          <span class="tag">Rocket League</span>
+          <span class="tag">Fortnite</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<hr class="divider" />
+
+
+<!-- ══════════════════════════════════════════════════
+     KONTAKT
+     Keine privaten Daten öffentlich sichtbar.
+     Klick auf den Button öffnet den Standard-E-Mail-Client
+     mit vorausgefülltem Betreff ("Lehrstellenanfrage").
+══════════════════════════════════════════════════ -->
+<section id="contact" class="reveal" aria-label="Kontakt">
+  <div class="container">
+
+    <p class="section-label">Kontakt</p>
+    <h2>Lass uns reden</h2>
+
+    <p class="contact-intro">
+      Du bist ein Lehrbetrieb oder möchtest mich kennenlernen?
+      Ich freue mich über deine Nachricht – schreib mir einfach eine E-Mail.
+    </p>
+
+    <!--
+      mailto-Link: öffnet den E-Mail-Client des Nutzers.
+      subject und body sind vorausgefüllt, um den Einstieg zu erleichtern.
+      Die E-Mail-Adresse ist hier kodiert (nicht im Klartext indexierbar)
+      via JavaScript – siehe Script-Block unten.
+    -->
+    <a id="mailBtn" href="#" class="btn-contact" aria-label="E-Mail schreiben">
+      ✉&nbsp; E-Mail schreiben
+    </a>
+
+    <p class="contact-note">Öffnet deinen E-Mail-Client</p>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer role="contentinfo">
+  <span class="footer-text">© 2026 Jaron Sommer</span>
+  <a href="https://github.com/jaronsommer" class="footer-link" target="_blank" rel="noopener noreferrer">
+    <!-- GitHub-Icon (inline SVG, keine externe Abhängigkeit) -->
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
                  0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
                  -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
                  .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
@@ -1185,96 +1308,130 @@
                  1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82
                  1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
                  1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-      </svg>
-      jaronsommer
-    </a>
-  </footer>
+    </svg>
+    jaronsommer
+  </a>
+</footer>
 
 
-  <!-- ══════════════════════════════════════════════════
-       JAVASCRIPT
-       Drei Funktionen:
-       1. Hamburger-Menü Toggle
-       2. Nav-Border beim Scrollen (Klasse .scrolled)
-       3. Scroll-Reveal (IntersectionObserver)
-       4. Mailto-Link mit obfuskierter E-Mail
-          (Schutz vor Spam-Bots die den HTML-Quelltext lesen)
-  ══════════════════════════════════════════════════ -->
-  <script>
-    /* ── 1. Hamburger-Menü ─────────────────────────────
-       Klick auf Burger togglet Klasse .open auf #navLinks.
-       aria-expanded wird für Screenreader aktualisiert.
-    ──────────────────────────────────────────────────── */
-    const burger   = document.getElementById('burger');
-    const navLinks = document.getElementById('navLinks');
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT
+     1. Hamburger-Menü Toggle
+     2. Nav-Border beim Scrollen (Klasse .scrolled)
+     3. Scroll-Reveal (IntersectionObserver)
+     4. Active Nav-Link Highlighting (IntersectionObserver)
+     5. Mailto-Link mit obfuskierter E-Mail (Spam-Schutz)
+══════════════════════════════════════════════════ -->
+<script>
+  /* ── 1. Hamburger-Menü ─────────────────────────────
+     Klick auf Burger togglet Klasse .open auf #navLinks.
+     aria-expanded wird für Screenreader aktualisiert.
+  ──────────────────────────────────────────────────── */
+  const burger   = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
 
-    burger.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      burger.setAttribute('aria-expanded', isOpen);
+  burger.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Menü schliessen, sobald ein Link geklickt wird
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
     });
-
-    // Menü schliessen sobald ein Link geklickt wird
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-      });
-    });
+  });
 
 
-    /* ── 2. Nav-Border beim Scrollen ───────────────────
-       Fügt Klasse .scrolled hinzu sobald > 10px gescrollt.
-    ──────────────────────────────────────────────────── */
-    const nav = document.getElementById('nav');
+  /* ── 2. Nav-Border beim Scrollen ───────────────────
+     Fügt Klasse .scrolled hinzu sobald > 10px gescrollt.
+  ──────────────────────────────────────────────────── */
+  const nav = document.getElementById('nav');
 
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
 
 
-    /* ── 3. Scroll-Reveal ──────────────────────────────
-       IntersectionObserver beobachtet alle .reveal Elemente.
-       Sobald sie im Viewport sichtbar sind, wird .visible
-       hinzugefügt → CSS-Transition blendet sie ein.
-    ──────────────────────────────────────────────────── */
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+  /* ── 3. Scroll-Reveal ──────────────────────────────
+     IntersectionObserver beobachtet alle .reveal Elemente.
+     Sobald sie im Viewport sichtbar sind, wird .visible
+     hinzugefügt → CSS-Transition blendet sie ein.
+  ──────────────────────────────────────────────────── */
+  const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
             // Einmal eingeblendet → nicht mehr beobachten
             revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08 }  // 8% des Elements muss sichtbar sein
-    );
+              }
+            });
+          },
+          { threshold: 0.08 }  // 8% des Elements muss sichtbar sein
+  );
 
-    document.querySelectorAll('.reveal').forEach(el => {
-      revealObserver.observe(el);
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+
+  /* ── 4. Active Nav-Link Highlighting ───────────────
+     Uses a scroll listener instead of IntersectionObserver.
+     On every scroll event we find which section's top edge
+     is closest to (but still above) the middle of the screen.
+     That section is considered "active" and its nav link is
+     highlighted. This is much more accurate than threshold-
+     based observers, which tend to jump ahead on click.
+  ──────────────────────────────────────────────────── */
+  const sections    = document.querySelectorAll('section[id]');
+  const allNavLinks = document.querySelectorAll('.nav-links a');
+
+  function updateActiveNav() {
+    // The trigger line: 40% down the viewport.
+    // A section is "active" once its top has crossed this line.
+    const triggerY = window.innerHeight * 0.4;
+
+    let current = null;
+    sections.forEach(section => {
+      const top = section.getBoundingClientRect().top;
+      if (top <= triggerY) {
+        current = section.id;   // keep updating → last one wins = lowest visible section
+      }
     });
 
+    allNavLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+    });
+  }
 
-    /* ── 4. Mailto-Link (Spam-Schutz) ──────────────────
-       Die E-Mail-Adresse wird nicht im Klartext im HTML
-       gespeichert, sondern hier per JS zusammengesetzt.
-       Einfache Hürde gegen automatisierte Spam-Bots.
-    ──────────────────────────────────────────────────── */
-    (function () {
+  // Run on scroll (passive = no performance impact)
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  // Run once on load to set initial state
+  updateActiveNav();
+
+
+  /* ── 5. Mailto-Link (Spam-Schutz) ──────────────────
+     Die E-Mail-Adresse wird nicht im Klartext im HTML
+     gespeichert, sondern hier per JS zusammengesetzt.
+     Einfache Hürde gegen automatisierte Spam-Bots.
+  ──────────────────────────────────────────────────── */
+  (function () {
       // E-Mail in Teile aufgeteilt → wird per JS zusammengesetzt
-      const parts = ['jaron.sommer.ch', '@', 'icloud.com'];
-      const email  = parts.join('');
-      const subject = encodeURIComponent('Lehrstellenanfrage');
-      const body    = encodeURIComponent(
-        'Hallo Jaron\n\nIch bin auf dein Portfolio gestossen und würde mich gerne mit dir in Verbindung setzen.\n\nFreundliche Grüsse'
-      );
+    const parts   = ['jaron.sommer.ch', '@', 'icloud.com'];
+    const email   = parts.join('');
+    const subject = encodeURIComponent('Lehrstellenanfrage');
+    const body    = encodeURIComponent(
+            'Hallo Jaron\n\nIch bin auf dein Portfolio gestossen und würde mich gerne mit dir in Verbindung setzen.\n\nFreundliche Grüsse'
+    );
 
-      const btn = document.getElementById('mailBtn');
-      if (btn) {
-        btn.href = `mailto:${email}?subject=${subject}&body=${body}`;
-      }
-    })();
-  </script>
+    const btn = document.getElementById('mailBtn');
+    if (btn) {
+      btn.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+  })();
+</script>
 
 </body>
 </html>
