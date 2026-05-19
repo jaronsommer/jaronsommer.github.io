@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Hintergrund: abgerundetes Quadrat in Akzentblau (passt zu -accent #2b5ce6) -->
+  <rect width="32" height="32" rx="6" fill="#2b5ce6"/>
+  <!-- Initiale "J" in kursiver Serife – spiegelt den Hero-Titel der Seite -->
+  <text x="50%" y="50%"
+        text-anchor="middle" dominant-baseline="central"
+        font-family="Georgia, 'DM Serif Display', serif"
+        font-size="22" font-style="italic" font-weight="400"
+        fill="#ffffff">J</text>
+</svg>

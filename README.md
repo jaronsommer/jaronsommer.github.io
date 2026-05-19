@@ -10,23 +10,26 @@ Persönliche Portfolio-Webseite für die Lehrstellensuche, gehostet via **GitHub
 
 Die Seite enthält folgende Sektionen:
 
-| Sektion | Beschreibung |
-|---|---|
-| **Hero** | Name, Berufswunsch, Status-Badge |
-| **Über mich** | Kurzprofil und persönliche Stärken |
-| **Ausbildung** | Chronologische Timeline (Kindergarten → Sek.) |
-| **Erfahrungen** | Arbeitserfahrung & Berufserkundungen |
-| **Kenntnisse** | Sprachen, IT-Tools, Hobbys |
-| **Kontakt** | E-Mail-Button (keine privaten Daten öffentlich) |
+| Sektion         | Beschreibung                                    |
+|-----------------|-------------------------------------------------|
+| **Hero**        | Name, Berufswunsch, Status-Badge                |
+| **Über mich**   | Kurzprofil und persönliche Stärken              |
+| **Ausbildung**  | Chronologische Timeline (Kindergarten → Sek.)   |
+| **Erfahrungen** | Arbeitserfahrung & Berufserkundungen            |
+| **Projekte**    | Eigene Webprojekte mit Live-Demo & GitHub-Link  |
+| **Kenntnisse**  | Sprachen, IT-Tools, Hobbys                      |
+| **Kontakt**     | E-Mail-Button (keine privaten Daten öffentlich) |
 
 ---
 
 ## Technologie
 
-- **Pure HTML/CSS/JS** – kein Framework, keine Build-Tools
+- **Pure HTML/CSS/JS** – kein Framework, keine Build-Tools, keine Dependencies
+- **Saubere Trennung** – HTML (`index.html`), CSS (`styles.css`), JavaScript (`script.js`) in eigenen Dateien
 - **Google Fonts** – DM Serif Display + DM Sans
 - **GitHub Pages** – kostenloses statisches Hosting
 - **Responsive** – funktioniert auf Mobile, Tablet & Desktop
+- **Druck- & Share-optimiert** – Print-Stylesheet, Open Graph Tags, Favicon
 
 ---
 
@@ -34,12 +37,24 @@ Die Seite enthält folgende Sektionen:
 
 ```
 jaronsommer.github.io/
-├── index.html        # Gesamte Webseite (eine Datei)
+├── index.html        # HTML-Struktur & Inhalt
+├── styles.css        # Layout, Farben, Animationen, Print-Stylesheet
+├── script.js         # Navigation, Scroll-Reveal, Mailto-Link
+├── favicon.svg       # Browser-Tab-Icon ("J" in Akzentblau)
 ├── README.md         # Diese Datei
 ├── .gitignore        # Ausgeschlossene Dateien
 └── images/           # Bilder & Fotos
-    └── foto.jpg      # Beispiel – beliebige JPG/PNG Dateien
+    └── Jaron.jpg     # Portrait (Hero-Bereich)
 ```
+
+**Was gehört wohin?**
+
+| Datei         | Wann anpassen?                                                                 |
+|---------------|---------------------------------------------------------------------------------|
+| `index.html`  | Texte, neue Sektionen, Berufserkundungen, Projekte                              |
+| `styles.css`  | Farben, Schriften, Abstände, Layout, Hover-Effekte                              |
+| `script.js`   | Verhalten (z.B. Menü-Toggle, Scroll-Effekte, neue Interaktionen)                |
+| `favicon.svg` | Tab-Icon (aktuell ein kursives „J" – kann mit jedem Vektor-Editor geändert werden) |
 
 ### Bilder hinzufügen
 
@@ -82,8 +97,8 @@ start index.html
 git clone https://github.com/jaronsommer/jaronsommer.github.io
 cd jaronsommer.github.io
 
-# 2. index.html ins Repo kopieren und pushen
-git add index.html
+# 2. Dateien ins Repo kopieren und pushen
+git add .
 git commit -m "feat: Portfolio Website hinzugefügt"
 git push origin main
 ```
@@ -98,7 +113,7 @@ git push origin main
 ### Änderungen deployen
 
 ```bash
-git add index.html
+git add .
 git commit -m "fix: Beschreibung angepasst"
 git push
 ```
@@ -110,8 +125,11 @@ GitHub Pages aktualisiert die Seite automatisch nach jedem Push.
 ## Mit IntelliJ IDEA bearbeiten
 
 1. **Repo klonen:** `Git → Clone` → URL einfügen
-2. **Bearbeiten:** `index.html` öffnen, Änderungen vornehmen
-3. **Vorschau:** Rechtsklick → *Open in → Browser* oder Live Preview Plugin
+2. **Bearbeiten:**
+   - Inhalte/Texte → `index.html`
+   - Aussehen → `styles.css`
+   - Verhalten → `script.js`
+3. **Vorschau:** Rechtsklick auf `index.html` → *Open in → Browser* oder Live Preview Plugin
 4. **Commit & Push:** `Git → Commit` → Nachricht eingeben → *Commit and Push*
 
 ---
@@ -120,7 +138,7 @@ GitHub Pages aktualisiert die Seite automatisch nach jedem Push.
 
 Auf der öffentlichen Webseite sind **keine privaten Kontaktdaten** sichtbar.  
 Der Kontakt-Button öffnet den E-Mail-Client des Besuchers via `mailto:`.  
-Die E-Mail-Adresse ist im JavaScript-Code aufgeteilt (Schutz vor Spam-Bots).
+Die E-Mail-Adresse ist in `script.js` aufgeteilt und wird erst zur Laufzeit zusammengesetzt (Schutz vor Spam-Bots).
 
 ---
 
