@@ -175,3 +175,17 @@
       btn.href = `mailto:${email}?subject=${subject}&body=${body}`;
     }
   })();
+
+
+  /* ── 7. PDF-Speichern-Button ───────────────────────
+     Öffnet den Browser-Druckdialog; im Dialog wählt
+     der Nutzer „Als PDF speichern". Das Print-Stylesheet
+     (styles.css @media print) sorgt für den Lebenslauf-
+     Look ohne Navigation, Hover-Effekte etc.
+  ──────────────────────────────────────────────────── */
+  (function () {
+    const btn = document.getElementById('pdfBtn');
+    if (btn) {
+      btn.addEventListener('click', () => window.print());
+    }
+  })();

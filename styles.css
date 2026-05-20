@@ -25,7 +25,7 @@
       --space-xl:   7rem;
 
       /* Layout */
-      --max-width:  920px;
+      --max-width:  1100px;
       --radius-sm:  6px;
       --radius-md:  12px;
     }
@@ -660,7 +660,7 @@
     ══════════════════════════════════════════════════════ */
     .projects-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
       align-items: stretch;
     }
@@ -668,28 +668,79 @@
     .project-card {
       display: flex;
       flex-direction: column;
-      padding: 1.5rem;
       border: 1px solid var(--ink-faint);
       border-radius: var(--radius-md);
       background: var(--white);
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      overflow: hidden;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     }
     .project-card:hover {
       border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(43,92,230,0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 14px 32px rgba(43,92,230,0.12);
+    }
+
+    /* Vorschau-Bild oben: Browser-Mockup-Look mit Hover-Zoom & Overlay */
+    .project-media {
+      position: relative;
+      display: block;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: var(--off-white);
+      border-bottom: 1px solid var(--ink-faint);
+    }
+    .project-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.5s ease;
+    }
+    .project-card:hover .project-media img {
+      transform: scale(1.04);
+    }
+    .project-media-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(17,17,16,0.55);
+      color: var(--white);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .project-card:hover .project-media-overlay {
+      opacity: 1;
+    }
+
+    /* Inhalt unterhalb des Vorschau-Bildes */
+    .project-body {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    .project-head {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
     }
 
     .project-icon {
       font-size: 1.6rem;
-      margin-bottom: 0.75rem;
+      line-height: 1;
     }
 
     .project-title {
       font-family: var(--font-serif),serif;
       font-size: 1.4rem;
       line-height: 1.2;
-      margin-bottom: 0.5rem;
     }
 
     .project-desc {
@@ -706,6 +757,46 @@
       gap: 0.4rem;
       margin-bottom: 1.25rem;
     }
+
+    /* Tech-Badges: farbig nach Marken-Logo, mit kleinem SVG-Icon */
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px 4px 8px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .tech-badge:hover {
+      transform: translateY(-1px);
+    }
+    .tech-badge svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+    .tech-badge--html {
+      background: #fff1ea;
+      color: #c2410c;
+      border-color: #fcd9c4;
+    }
+    .tech-badge--html svg { fill: #e34f26; }
+    .tech-badge--css {
+      background: #e7f0ff;
+      color: #1d4ed8;
+      border-color: #c7dbff;
+    }
+    .tech-badge--css svg { fill: #1572b6; }
+    .tech-badge--js {
+      background: #fff8d6;
+      color: #854d0e;
+      border-color: #fce98a;
+    }
+    .tech-badge--js svg { fill: #f7df1e; stroke: #b8a700; stroke-width: 0.3; }
 
     .project-links {
       display: flex;
@@ -889,6 +980,29 @@
       transform: translateY(-2px);
     }
 
+    /* Sekundärer Aktions-Button neben dem E-Mail-Button:
+       gleiche Pill-Form, aber Outline-Optik statt Akzentfarbe. */
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.9rem 2rem;
+      border-radius: 100px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--font-sans), serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid var(--ink-faint);
+      cursor: pointer;
+      margin-left: 0.6rem;
+      transition: border-color 0.18s, color 0.18s, transform 0.18s;
+    }
+    .btn-pdf:hover {
+      border-color: var(--ink-light);
+      transform: translateY(-2px);
+    }
+
     /* Hinweistext unter dem Button */
     .contact-note {
       margin-top: 1rem;
@@ -1041,8 +1155,10 @@
       #nav,
       .hamburger,
       .next-btn,
-      .hero-badge,
+      .hero-badge-dot,
       .hero-actions,
+      .exploration-badge,
+      .btn-pdf,
       .contact-note {
         display: none !important;
       }
@@ -1057,10 +1173,16 @@
       }
       .hero-content {
         display: grid;
-        grid-template-columns: 1fr 4.5cm;
+        grid-template-columns: 1fr 3.5cm;
         gap: 1cm;
       }
-      .hero-photo { max-width: 4.5cm; }
+      /* Mobile-Regel (max-width: 700px) greift im Druck wegen schmaler
+         Druckbreite mit — Foto-Override hier wieder geraderücken. */
+      .hero-photo {
+        max-width: 3.5cm !important;
+        margin-inline: 0 !important;
+        order: initial !important;
+      }
       .hero-photo::before { display: none; }
       .hero-photo img {
         border: 1px solid #ccc;
@@ -1069,9 +1191,28 @@
       .hero-title { font-size: 32pt; line-height: 1.0; }
       .hero-desc  { font-size: 11pt; margin-top: 0.4cm; }
 
-      /* Sektionen: enger, keine Umbrüche mitten in Karten */
-      .section, #contact {
+      /* Status-Badge im Druck als wichtige Info beibehalten */
+      .hero-badge {
+        display: inline-block !important;
+        border: 1px solid #888 !important;
+        padding: 0.06cm 0.3cm;
+        font-size: 9pt;
+        font-weight: 600;
+        margin-bottom: 0.3cm;
+        border-radius: 100px;
+      }
+
+      /* Sektionen: enger; Umbruchregeln auf Karten/Items statt ganze Sektion,
+         damit Inhalt natürlich über Seiten fliesst statt Lücken zu lassen.
+         Kontakt-Block ist klein → wieder zusammenhalten, sonst zerreisst der Button. */
+      .section {
         padding: 0.5cm 0;
+      }
+      #contact {
+        padding: 0.5cm 0;
+        page-break-inside: avoid;
+      }
+      .tl-item {
         page-break-inside: avoid;
       }
       .section--alt { background: none !important; }
@@ -1096,17 +1237,16 @@
         transform: none !important;
         page-break-inside: avoid;
       }
-      .exploration-badge {
-        border: 1px solid #555 !important;
-        color: #000 !important;
-      }
-
       /* Tags & Pills: schlicht */
-      .tag, .tag--accent {
+      .tag, .tag--accent, .tech-badge {
         border: 1px solid #999 !important;
         background: none !important;
         color: #000 !important;
       }
+      .tech-badge svg { fill: #000 !important; }
+
+      /* Projekt-Vorschau-Bilder & Overlay im Druck ausblenden */
+      .project-media { display: none !important; }
 
       /* Sprach-Fortschrittsbalken: einfach grau gefüllt */
       .lang-bar-track {
@@ -1124,26 +1264,50 @@
         transform: none !important;
       }
 
-      /* Kontakt-Button: keine Pille, dafür echte E-Mail-Adresse */
+      /* Kontakt-Button: keine Pille, dafür echte E-Mail-Adresse.
+         inline-block + avoid verhindert ✉-Icon-Waisenkind oben auf Folgeseite. */
       .btn-contact {
         background: none !important;
         color: #000 !important;
         padding: 0;
         font-weight: 600;
         text-decoration: underline;
+        display: inline-block;
+        page-break-inside: avoid;
       }
       .btn-contact::after {
         content: " – jaron.sommer.ch@icloud.com";
         font-weight: 400;
       }
 
-      /* Externe Links: URL in Klammern dahinter sichtbar machen */
-      .exploration-title a[href^="http"]::after,
-      .project-link[href^="http"]::after,
-      .footer-link[href^="http"]::after,
-      .footer-note a[href^="http"]::after {
-        content: " (" attr(href) ")";
-        font-size: 9pt;
+      /* Schnuppertag-Titel: URL als eigene, dezente Zeile darunter.
+         display: inline-block + page-break-inside: avoid verhindert,
+         dass der ↗-Pfeil verwaist oben auf der Folgeseite landet. */
+      .exploration-title a[href^="http"] {
+        display: inline-block;
+        page-break-inside: avoid;
+      }
+      .exploration-title a[href^="http"]::after {
+        content: attr(href);
+        display: block;
+        font-size: 8pt;
+        font-weight: 400;
+        color: #555 !important;
+        word-break: break-all;
+        margin-top: 0.05cm;
+      }
+
+      /* Projekt-Links: Pill-Optik raus, URL klein dahinter */
+      .project-link {
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 0.6cm 0.15cm 0;
+        display: inline-block;
+        page-break-inside: avoid;
+      }
+      .project-link[href^="http"]::after {
+        content: " " attr(href);
+        font-size: 8pt;
         font-weight: 400;
         color: #555 !important;
         word-break: break-all;
