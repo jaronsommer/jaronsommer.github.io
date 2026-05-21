@@ -29,7 +29,8 @@ Die Seite enthält folgende Sektionen:
 - **Google Fonts** – DM Serif Display + DM Sans
 - **GitHub Pages** – kostenloses statisches Hosting
 - **Responsive** – funktioniert auf Mobile, Tablet & Desktop
-- **Druck- & Share-optimiert** – Print-Stylesheet, Open Graph Tags, Favicon
+- **Druck- & Share-optimiert** – Print-Stylesheet, „Als PDF speichern"-Button (`window.print()`), Open Graph Tags, Favicon
+- **Privacy-friendly Analytics** – [counter.dev](https://counter.dev) (kein Cookie-Banner nötig, keine personenbezogenen Daten)
 
 ---
 
@@ -37,14 +38,17 @@ Die Seite enthält folgende Sektionen:
 
 ```
 jaronsommer.github.io/
-├── index.html        # HTML-Struktur & Inhalt
-├── styles.css        # Layout, Farben, Animationen, Print-Stylesheet
-├── script.js         # Navigation, Scroll-Reveal, Mailto-Link
-├── favicon.svg       # Browser-Tab-Icon ("J" in Akzentblau)
-├── README.md         # Diese Datei
-├── .gitignore        # Ausgeschlossene Dateien
-└── images/           # Bilder & Fotos
-    └── Jaron.jpg     # Portrait (Hero-Bereich)
+├── index.html              # HTML-Struktur & Inhalt
+├── styles.css              # Layout, Farben, Animationen, Print-Stylesheet
+├── script.js               # Navigation, Scroll-Reveal, Mailto-Link, PDF-Button
+├── favicon.svg             # Browser-Tab-Icon ("J" in Akzentblau)
+├── README.md               # Diese Datei
+├── .gitignore              # Ausgeschlossene Dateien
+└── images/                 # Bilder & Fotos
+    ├── Jaron.jpg           # Portrait (Hero-Bereich)
+    ├── portfolio.png       # Screenshot dieser Portfolio-Seite (Projekte-Sektion)
+    ├── tastenpanik.png     # Screenshot Projekt „TastenPanik"
+    └── weisser-leopard.png # Screenshot Projekt „Die drei ??? und der weisse Leopard"
 ```
 
 **Was gehört wohin?**
@@ -52,8 +56,8 @@ jaronsommer.github.io/
 | Datei         | Wann anpassen?                                                                 |
 |---------------|---------------------------------------------------------------------------------|
 | `index.html`  | Texte, neue Sektionen, Berufserkundungen, Projekte                              |
-| `styles.css`  | Farben, Schriften, Abstände, Layout, Hover-Effekte                              |
-| `script.js`   | Verhalten (z.B. Menü-Toggle, Scroll-Effekte, neue Interaktionen)                |
+| `styles.css`  | Farben, Schriften, Abstände, Layout, Hover-Effekte, Print-Stylesheet            |
+| `script.js`   | Verhalten (Menü-Toggle, Scroll-Effekte, PDF-Button, Mailto-Schutz)              |
 | `favicon.svg` | Tab-Icon (aktuell ein kursives „J" – kann mit jedem Vektor-Editor geändert werden) |
 
 ### Bilder hinzufügen
