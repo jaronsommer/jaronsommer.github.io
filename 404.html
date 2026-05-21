@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Diese Seite ist auf Schnuppertage — 404." />
+  <meta name="robots" content="noindex" />
+  <title>404 – Diese Seite ist auf Schnuppertage</title>
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="404 – Seite nicht gefunden" />
+  <meta property="og:description" content="Diese Seite ist auf Schnuppertage — sie wird bestimmt bald wieder da sein." />
+  <meta property="og:locale" content="de_CH" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --white:      #ffffff;
+      --off-white:  #f7f7f5;
+      --ink:        #111110;
+      --ink-light:  #6b6b65;
+      --ink-faint:  #c8c8c2;
+      --accent:     #2b5ce6;
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-sans:  'DM Sans', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink);
+      background: var(--off-white);
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    main {
+      max-width: 560px;
+      text-align: center;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .code {
+      font-family: var(--font-serif);
+      font-size: clamp(6rem, 22vw, 11rem);
+      line-height: 1;
+      color: var(--ink);
+      letter-spacing: -0.04em;
+    }
+
+    .code .zero {
+      display: inline-block;
+      color: var(--accent);
+      animation: wobble 2.4s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      margin: 0.8rem 0 1rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      color: var(--ink-light);
+      font-size: 1.05rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .joke {
+      font-style: italic;
+      color: var(--ink-light);
+      font-size: 0.95rem;
+      margin: 1.4rem auto 2rem;
+      max-width: 460px;
+      border-left: 2px solid var(--ink-faint);
+      padding-left: 1rem;
+      text-align: left;
+    }
+
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.75rem 1.6rem;
+      background: var(--accent);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 100px;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .home-btn:hover {
+      background: #1e4ad4;
+      transform: translateY(-1px);
+    }
+
+    .home-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .arrow {
+      display: inline-block;
+      transition: transform 0.18s ease;
+    }
+
+    .home-btn:hover .arrow {
+      transform: translateX(-3px);
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(0deg); }
+      25%      { transform: rotate(-8deg); }
+      75%      { transform: rotate(8deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .code .zero,
+      main { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="code" aria-hidden="true">4<span class="zero">0</span>4</div>
+  <h1>Diese Seite ist auf Schnuppertage.</h1>
+  <p>Tut mir leid — der Link führt ins Leere.</p>
+  <p>Vielleicht hat sie sich gerade eine Lehrstelle anschauen gegangen.</p>
+
+  <blockquote class="joke">
+    Falls du nach etwas Bestimmtem suchst: meistens hilft ein Klick zurück.
+    Falls nicht: <em>auch ich verklicke mich manchmal beim Coden.</em>
+  </blockquote>
+
+  <a href="/" class="home-btn" aria-label="Zurück zur Startseite">
+    <span class="arrow">←</span> Zur Startseite
+  </a>
+
+  <footer>© 2026 Jaron Sommer</footer>
+</main>
+
+</body>
+</html>

@@ -39,9 +39,11 @@ Die Seite enthält folgende Sektionen:
 ```
 jaronsommer.github.io/
 ├── index.html              # HTML-Struktur & Inhalt
+├── 404.html                # Eigene Fehlerseite (GitHub Pages serviert sie automatisch)
 ├── styles.css              # Layout, Farben, Animationen, Print-Stylesheet
 ├── script.js               # Navigation, Scroll-Reveal, Mailto-Link, PDF-Button
 ├── favicon.svg             # Browser-Tab-Icon ("J" in Akzentblau)
+├── optimize-images.ps1     # Helper-Script: komprimiert images/ via sharp (Node nötig)
 ├── README.md               # Diese Datei
 ├── .gitignore              # Ausgeschlossene Dateien
 └── images/                 # Bilder & Fotos
@@ -70,8 +72,8 @@ Neue Bilder immer im Ordner `images/` speichern und in `index.html` so einbinden
 
 **Tipps:**
 - Dateinamen ohne Leerzeichen und Sonderzeichen (z.B. `foto.jpg` statt `mein foto (1).jpg`)
-- Fotos vor dem Upload verkleinern auf max. ~800px Breite → [squoosh.app](https://squoosh.app)
 - Format: JPG für Fotos, PNG für Grafiken mit transparentem Hintergrund
+- **Vor dem Commit komprimieren**: `.\optimize-images.ps1` ausführen (resized auf 800px, ~70% kleiner). Benötigt Node.js (für `npx sharp-cli`). Beispiel: `.\optimize-images.ps1 images\meinfoto.jpg`
 
 ---
 

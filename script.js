@@ -5,18 +5,20 @@
   const burger   = document.getElementById('burger');
   const navLinks = document.getElementById('navLinks');
 
-  burger.addEventListener('click', () => {
-    const isOpen = navLinks.classList.toggle('open');
-    burger.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  // Menü schliessen, sobald ein Link geklickt wird
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      navLinks.classList.remove('open');
-      burger.setAttribute('aria-expanded', 'false');
+  if (burger && navLinks) {
+    burger.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(isOpen));
     });
-  });
+
+    // Menü schliessen, sobald ein Link geklickt wird
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
 
   /* ── 2. Nav-Border beim Scrollen ───────────────────
