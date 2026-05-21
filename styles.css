@@ -654,6 +654,179 @@
     }
 
     /* ══════════════════════════════════════════════════════
+       BERICHT-KARTE & MODAL
+       Eine exploration-card kann als <button> ausgeführt werden
+       und ein <dialog> mit ausführlichem Schnupperbericht öffnen.
+    ══════════════════════════════════════════════════════ */
+    /* Wrapper traegt role="listitem", soll aber Layout nicht beeinflussen:
+       display:contents macht den Wrapper grid-/flex-transparent. */
+    .exploration-listitem-contents {
+      display: contents;
+    }
+
+    .exploration-card--report {
+      /* Button-Defaults zurücksetzen, Card-Stil erben */
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      color: inherit;
+      width: 100%;
+    }
+    .exploration-card--report:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .exploration-report-hint {
+      display: block;
+      margin-top: 0.45rem;
+      font-size: 0.7rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Native <dialog>-Modal */
+    .report-modal {
+      /* Explizite Zentrierung: UA-Default (inset:0 + margin:auto) wird hier
+         wegen unserer max-height/width-Kombination nicht immer korrekt geerbt. */
+      position: fixed;
+      inset: 0;
+      margin: auto;
+      width: min(640px, 92vw);
+      max-height: min(90vh, 720px);
+      padding: 0;
+      border: none;
+      border-radius: var(--radius-md);
+      background: var(--white);
+      color: var(--ink);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+    .report-modal::backdrop {
+      background: rgba(17, 17, 16, 0.55);
+      backdrop-filter: blur(3px);
+    }
+    .report-modal article {
+      /* Scrollbarer Bereich. Padding-right etwas größer, damit der Inhalt
+         nicht direkt an der Scrollbar klebt. */
+      padding: 2.2rem 1.4rem 2rem 2rem;
+      max-height: inherit;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      /* Firefox + modernes Chromium */
+      scrollbar-width: thin;
+      scrollbar-color: var(--ink-faint) transparent;
+      /* sanftes Scroll-Padding-top, damit Eyebrow nicht am Rand klebt */
+      scroll-padding-top: 1rem;
+    }
+    /* WebKit/Blink-Fallback fuer aeltere Safari/Chrome */
+    .report-modal article::-webkit-scrollbar {
+      width: 10px;
+    }
+    .report-modal article::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .report-modal article::-webkit-scrollbar-thumb {
+      background: var(--ink-faint);
+      border-radius: 100px;
+      /* 2px transparent border laesst Thumb optisch schlanker wirken */
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    .report-modal article::-webkit-scrollbar-thumb:hover {
+      background: var(--ink-light);
+      background-clip: padding-box;
+      border: 2px solid transparent;
+    }
+    .report-modal-close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1.6rem;
+      line-height: 1;
+      color: var(--ink-light);
+      border-radius: 50%;
+      transition: background 0.18s, color 0.18s;
+    }
+    .report-modal-close:hover {
+      background: var(--off-white);
+      color: var(--ink);
+    }
+    .report-modal-close:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .report-modal-eyebrow {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .report-modal h3 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin: 0 0 1.3rem;
+      line-height: 1.2;
+    }
+    .report-highlights {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.4rem;
+      display: grid;
+      gap: 0.45rem;
+    }
+    .report-highlights li {
+      position: relative;
+      padding-left: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .report-highlights li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      top: 0.05em;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+    .report-description {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--ink);
+      margin: 0 0 1.4rem;
+    }
+    .report-figure {
+      margin: 0 0 1.4rem;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--off-white);
+    }
+    .report-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .report-modal-link {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent);
+      transition: opacity 0.18s;
+    }
+    .report-modal-link:hover {
+      opacity: 0.7;
+    }
+
+    /* ══════════════════════════════════════════════════════
        PROJEKTE-SEKTION
        Zwei Karten nebeneinander mit Beschreibung, Tech-Tags
        und Links (Live-Demo + GitHub).
@@ -1158,9 +1331,52 @@
       .hero-badge-dot,
       .hero-actions,
       .exploration-badge,
+      .exploration-report-hint,
+      .report-modal-close,
       .btn-pdf,
       .contact-note {
         display: none !important;
+      }
+
+      /* Bericht-Card im Druck als normale Card darstellen */
+      .exploration-card--report {
+        background: var(--white);
+        border: 1px solid var(--ink-faint);
+      }
+
+      /* Modal-Inhalt im Druck inline anzeigen (statt versteckt im top-layer) */
+      .report-modal {
+        display: block !important;
+        position: static !important;
+        width: 100%;
+        max-width: none;
+        max-height: none;
+        border: 1px solid #999;
+        border-radius: 4px;
+        margin-top: 0.4cm;
+        padding: 0;
+        box-shadow: none;
+        background: #fff;
+        page-break-inside: avoid;
+      }
+      .report-modal::backdrop { display: none; }
+      .report-modal article {
+        padding: 0.4cm 0.5cm;
+        max-height: none;
+        overflow: visible;
+      }
+      .report-modal h3 {
+        font-size: 14pt;
+        margin-bottom: 0.3cm;
+      }
+      .report-modal-eyebrow { font-size: 8pt; color: #333; }
+      .report-highlights li { font-size: 10pt; }
+      .report-description { font-size: 10pt; }
+      .report-figure img {
+        max-height: 6cm;
+        width: auto;
+        margin: 0.3cm auto;
+        display: block;
       }
 
       /* Hero kompakter, ohne Diagonalmuster */

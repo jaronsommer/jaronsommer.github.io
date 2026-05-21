@@ -191,3 +191,47 @@
       btn.addEventListener('click', () => window.print());
     }
   })();
+
+
+  /* ── 8. Schnupperbericht-Modal ─────────────────────
+     Trigger: jedes Element mit [data-modal-trigger="<id>"]
+     öffnet das <dialog> mit der entsprechenden ID via
+     native showModal() (Escape & Focus-Trap kostenlos).
+     Backdrop-Klick & Close-Button schliessen, Fokus
+     kehrt automatisch zum Trigger zurück.
+  ──────────────────────────────────────────────────── */
+  (function () {
+    const triggers = document.querySelectorAll('[data-modal-trigger]');
+    if (triggers.length === 0) return;
+
+    let returnFocusTo = null;
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const modal = document.getElementById(trigger.dataset.modalTrigger);
+        if (!modal || typeof modal.showModal !== 'function') return;
+        returnFocusTo = trigger;
+        modal.showModal();
+      });
+    });
+
+    document.querySelectorAll('dialog.report-modal').forEach(modal => {
+      // Backdrop-Klick (event.target === dialog selbst, NICHT inneres <article>)
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.close();
+      });
+
+      const closeBtn = modal.querySelector('.report-modal-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => modal.close());
+      }
+
+      // Fokus nach Schliessen zurück zum Trigger
+      modal.addEventListener('close', () => {
+        if (returnFocusTo) {
+          returnFocusTo.focus();
+          returnFocusTo = null;
+        }
+      });
+    });
+  })();
