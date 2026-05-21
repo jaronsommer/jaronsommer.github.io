@@ -576,12 +576,44 @@
     /* ══════════════════════════════════════════════════════
        BERUFSERKUNDUNGEN
        Zweispaltiges Karten-Raster mit "upcoming"-Akzent für
-       geplante Schnuppertage.
+       geplante Schnuppertage. Liste in zwei Gruppen geteilt:
+       "Bisher absolviert" und "Geplant" mit eigenen Labels.
     ══════════════════════════════════════════════════════ */
+
+    /* Subheading vor jeder Gruppe (Absolviert / Geplant) */
+    .exploration-list-label {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin: 0.4rem 0 0.85rem;
+    }
+    /* "Geplant"-Label etwas mehr Abstand + feine Trennlinie für klare Sektion */
+    .exploration-list-label--upcoming {
+      margin-top: 2.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px dashed var(--ink-faint);
+    }
+
     .explorations-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.85rem;
+    }
+
+    /* Schnupper-Karten optisch hervorheben — Schnuppertage sind die wichtigsten
+       Berufserkundungen (mehrtägig, praxisnah). Linker Akzent-Border subtle,
+       wirkt sowohl auf absolviert als auch upcoming. */
+    .exploration-card[data-type="schnupper"] {
+      border-left: 3px solid var(--accent);
+      padding-left: calc(1.1rem - 2px); /* total padding bleibt konstant */
+    }
+    .exploration-card--upcoming[data-type="schnupper"] {
+      /* upcoming hat bereits accent-bg + transparent border;
+         linker border bleibt accent für klare Schnupper-Kennzeichnung */
+      border-left-color: var(--accent);
     }
 
     .exploration-card {
