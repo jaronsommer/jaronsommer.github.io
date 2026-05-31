@@ -487,6 +487,13 @@
       color: var(--ink-light);
     }
 
+    /* Hochzaehlende Zahlen im "Zielstrebig"-Eintrag (script.js Modul 5) */
+    .strength-desc .count-up {
+      font-weight: 600;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
     /* ══════════════════════════════════════════════════════
        TIMELINE
        Vertikale Zeitleiste für Ausbildung & Erfahrung.

@@ -115,7 +115,8 @@
 
     // Absolvierte Erkundungen nach Typ zählen.
     // Typ-Erkennung: 1. explizites data-type, 2. Stichwort im Titel.
-    const counts = { zukunftstag: 0, infoanlass: 0, schnuppern: 0 };
+    // Schluessel decken sich mit data-type (z. B. "schnupper").
+    const counts = { zukunftstag: 0, infoanlass: 0, schnupper: 0 };
 
     document.querySelectorAll(
       '.exploration-card:not(.exploration-card--upcoming)'
@@ -125,24 +126,62 @@
         const title = (card.querySelector('.exploration-title')?.textContent || '').toLowerCase();
         if (title.includes('zukunftstag'))    type = 'zukunftstag';
         else if (title.includes('infoanlass')) type = 'infoanlass';
-        else if (title.includes('schnupper'))  type = 'schnuppern';
+        else if (title.includes('schnupper'))  type = 'schnupper';
       }
       if (type && counts[type] !== undefined) counts[type]++;
     });
 
-    // Singular/Plural-Labels pro Typ
-    const label = {
-      zukunftstag: n => n === 1 ? '1 Zukunftstag'  : `${n} Zukunftstage`,
-      infoanlass:  n => n === 1 ? '1 Infoanlass'   : `${n} Infoanlässe`,
-      schnuppern:  n => n === 1 ? '1 Schnuppertag' : `${n} Schnuppertage`,
+    // Singular/Plural-Nomen pro Typ (Zahl wird separat gerendert,
+    // damit sie beim Scroll-Reveal hochzaehlen kann).
+    const noun = {
+      zukunftstag: n => n === 1 ? 'Zukunftstag'  : 'Zukunftstage',
+      infoanlass:  n => n === 1 ? 'Infoanlass'   : 'Infoanlässe',
+      schnupper:   n => n === 1 ? 'Schnuppertag' : 'Schnuppertage',
     };
     const parts = Object.entries(counts)
       .filter(([, n]) => n > 0)
-      .map(([type, n]) => label[type](n));
+      .map(([type, n]) =>
+        `<span class="count-up" data-target="${n}">0</span> ${noun[type](n)}`
+      );
 
     const countEl = document.getElementById('strengthCount');
     if (countEl && parts.length > 0) {
-      countEl.textContent = parts.join(' · ') + ' für die Berufswahl absolviert';
+      countEl.innerHTML = parts.join(' · ') + ' für die Berufswahl absolviert';
+
+      const spans = countEl.querySelectorAll('.count-up');
+      const showFinal = () => spans.forEach(s => { s.textContent = s.dataset.target; });
+
+      // Im Druck immer die Endwerte zeigen (Animation koennte nie ausgeloest worden sein).
+      window.addEventListener('beforeprint', showFinal);
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        showFinal();
+      } else {
+        // Sobald der Eintrag sichtbar wird: jede Zahl von 0 hochzaehlen (easeOutCubic).
+        const animate = (el, target) => {
+          const duration = 1100;
+          let startTs = null;
+          const step = (ts) => {
+            if (startTs === null) startTs = ts;
+            const t = Math.min(1, (ts - startTs) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = String(Math.round(eased * target));
+            if (t < 1) requestAnimationFrame(step);
+            else el.textContent = String(target);
+          };
+          requestAnimationFrame(step);
+        };
+
+        const io = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            spans.forEach(s => animate(s, Number(s.dataset.target)));
+            obs.disconnect();
+          });
+        }, { threshold: 0.6 });
+        io.observe(countEl);
+      }
     }
   })();
 
