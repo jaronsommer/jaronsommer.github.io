@@ -35,7 +35,7 @@
    11. <script src>    – Einbindung script.js
   ============================================================
 -->
-<html lang="de">
+<html lang="de-CH">
 <head>
   <!-- ─────────────────────────────────────────────────────
        META & SEO
@@ -44,9 +44,10 @@
   ───────────────────────────────────────────────────────── -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Jaron Sommer – Schüler aus Wiedlisbach, auf der Suche nach einer Lehrstelle als Informatiker/in EFZ Applikationsentwicklung. Zweitwunsch: Automatiker oder Mediamatiker." />
+  <meta name="description" content="Jaron Sommer – Schüler aus Wiedlisbach (Kanton Bern), auf der Suche nach einer Lehrstelle als Informatiker/in EFZ Applikationsentwicklung oder Automatiker/in EFZ. Start August 2027." />
   <meta name="author" content="Jaron Sommer" />
-  <title>Jaron Sommer</title>
+  <link rel="canonical" href="https://jaronsommer.github.io/" />
+  <title>Jaron Sommer – Lehrstelle Informatiker EFZ oder Automatiker</title>
 
   <!-- ─────────────────────────────────────────────────────
        FAVICON
@@ -56,22 +57,33 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <!-- ─────────────────────────────────────────────────────
+       LCP-PRELOAD
+       Hero-Portrait ist das groesste sichtbare Element beim
+       Laden (Largest Contentful Paint). Preload startet den
+       Download frueh – noch vor CSS/Fonts – und verbessert
+       die wahrgenommene Ladezeit spuerbar.
+  ───────────────────────────────────────────────────────── -->
+  <link rel="preload" as="image" href="images/Jaron.jpg" fetchpriority="high" />
+
+  <!-- ─────────────────────────────────────────────────────
        SOCIAL SHARING (Open Graph & Twitter Card)
        Diese Tags steuern die Vorschau, wenn der Link in
        WhatsApp, Teams, LinkedIn, Slack oder per E-Mail
        geteilt wird: Titel, Beschreibung und Vorschaubild.
   ───────────────────────────────────────────────────────── -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://jaronsommer.github.io/" />
-  <meta property="og:title"       content="Jaron Sommer – auf Lehrstellensuche" />
-  <meta property="og:description" content="Schüler aus Wiedlisbach, auf der Suche nach einer Lehrstelle als Informatiker/in EFZ Applikationsentwicklung. Zweitwunsch: Automatiker oder Mediamatiker." />
-  <meta property="og:image"       content="https://jaronsommer.github.io/images/Jaron.jpg" />
-  <meta property="og:image:alt"   content="Portrait von Jaron Sommer" />
-  <meta property="og:locale"      content="de_CH" />
+  <meta property="og:type"         content="website" />
+  <meta property="og:url"          content="https://jaronsommer.github.io/" />
+  <meta property="og:title"        content="Jaron Sommer – auf Lehrstellensuche" />
+  <meta property="og:description"  content="Schüler aus Wiedlisbach, auf der Suche nach einer Lehrstelle als Informatiker/in EFZ Applikationsentwicklung oder Automatiker/in EFZ. Start August 2027." />
+  <meta property="og:image"        content="https://jaronsommer.github.io/images/Jaron.jpg" />
+  <meta property="og:image:alt"    content="Portrait von Jaron Sommer" />
+  <meta property="og:image:width"  content="800" />
+  <meta property="og:image:height" content="1067" />
+  <meta property="og:locale"       content="de_CH" />
 
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="Jaron Sommer – auf Lehrstellensuche" />
-  <meta name="twitter:description" content="Schüler aus Wiedlisbach, auf der Suche nach einer Lehrstelle als Informatiker/in EFZ Applikationsentwicklung. Zweitwunsch: Automatiker oder Mediamatiker." />
+  <meta name="twitter:description" content="Schüler aus Wiedlisbach, auf der Suche nach einer Lehrstelle als Informatiker/in EFZ Applikationsentwicklung oder Automatiker/in EFZ. Start August 2027." />
   <meta name="twitter:image"       content="https://jaronsommer.github.io/images/Jaron.jpg" />
 
   <!-- ─────────────────────────────────────────────────────
@@ -84,6 +96,44 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- ─────────────────────────────────────────────────────
+       STRUKTURIERTE DATEN (JSON-LD, schema.org/Person)
+       Hilft Google zu verstehen: Person auf Lehrstellensuche,
+       Wohnort, gesuchte Berufe, Sprachen, Kenntnisse.
+       Bei Inhalts-Änderungen (Wohnort, Berufswunsch) hier
+       mitpflegen – muss zum sichtbaren Text passen.
+  ───────────────────────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jaron Sommer",
+    "url": "https://jaronsommer.github.io/",
+    "image": "https://jaronsommer.github.io/images/Jaron.jpg",
+    "jobTitle": "Lernende/r in spe – Informatiker/in EFZ Applikationsentwicklung oder Automatiker/in EFZ",
+    "description": "Schüler aus Wiedlisbach (Kanton Bern) auf der Suche nach einer Lehrstelle als Informatiker/in EFZ Applikationsentwicklung oder Automatiker/in EFZ. Lehrbeginn August 2027.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Wiedlisbach",
+      "addressRegion": "Bern",
+      "addressCountry": "CH"
+    },
+    "knowsLanguage": ["gsw", "de", "fr", "en"],
+    "knowsAbout": [
+      "Programmierung",
+      "Applikationsentwicklung",
+      "Automatik",
+      "Mediamatik",
+      "Microsoft Office 365"
+    ],
+    "seeks": {
+      "@type": "Demand",
+      "name": "Lehrstelle Informatiker/in EFZ Applikationsentwicklung oder Automatiker/in EFZ"
+    },
+    "sameAs": ["https://github.com/jaronsommer"]
+  }
+  </script>
 </head>
 <body>
 
@@ -155,7 +205,7 @@
 
     <!-- Right column: portrait photo -->
     <div class="hero-photo">
-      <img src="images/Jaron.jpg" alt="Jaron Sommer" />
+      <img src="images/Jaron.jpg" alt="Jaron Sommer" width="800" height="1067" fetchpriority="high" decoding="async" />
     </div>
 
   </div>
@@ -477,7 +527,7 @@
           An meinem Schnuppertag im Berufslernverbund habe ich den Beruf Automatiker kennengelernt und einen funktionsfähigen Gameboy von Grund auf gebaut. Dabei habe ich zum ersten Mal gelötet, Kabel konfektioniert und die einzelnen Bauteile zu einem fertigen Gerät zusammengesetzt.
         </p>
         <figure class="report-figure">
-          <img src="images/gameboy.jpeg" alt="Selbst zusammengebauter Gameboy mit gelöteten Komponenten" loading="lazy" />
+          <img src="images/gameboy.jpeg" alt="Selbst zusammengebauter Gameboy mit gelöteten Komponenten" width="800" height="1067" loading="lazy" decoding="async" />
         </figure>
         <a href="https://berufslernverbund.ch/" target="_blank" rel="noopener noreferrer" class="report-modal-link">berufslernverbund.ch ↗</a>
       </article>
@@ -507,7 +557,7 @@
       <!-- Projekt 1: TastenPanik -->
       <article class="project-card">
         <a href="https://jaronsommer.github.io/TastenPanik/" class="project-media" target="_blank" rel="noopener noreferrer" aria-label="Live-Demo TastenPanik öffnen">
-          <img src="images/tastenpanik.png" alt="Screenshot von TastenPanik – Level-Auswahl mit vier Karten" loading="lazy" />
+          <img src="images/tastenpanik.png" alt="Screenshot von TastenPanik – Level-Auswahl mit vier Karten" width="800" height="500" loading="lazy" decoding="async" />
           <span class="project-media-overlay">Live ansehen ↗</span>
         </a>
         <div class="project-body">
@@ -550,7 +600,7 @@
       <!-- Projekt 2: weisserLeopard -->
       <article class="project-card">
         <a href="https://jaronsommer.github.io/weisserLeopard/" class="project-media" target="_blank" rel="noopener noreferrer" aria-label="Live-Demo Weisser Leopard öffnen">
-          <img src="images/weisser-leopard.png" alt="Screenshot der Webseite ‚Die drei ??? und der weisse Leopard‘" loading="lazy" />
+          <img src="images/weisser-leopard.png" alt="Screenshot der Webseite ‚Die drei ??? und der weisse Leopard‘" width="800" height="500" loading="lazy" decoding="async" />
           <span class="project-media-overlay">Live ansehen ↗</span>
         </a>
         <div class="project-body">
@@ -593,7 +643,7 @@
       <!-- Projekt 3: Diese Portfolio-Webseite -->
       <article class="project-card">
         <a href="https://jaronsommer.github.io/" class="project-media" target="_blank" rel="noopener noreferrer" aria-label="Live-Demo Portfolio öffnen">
-          <img src="images/portfolio.png" alt="Screenshot der Portfolio-Webseite mit Hero und Portrait" loading="lazy" />
+          <img src="images/portfolio.png" alt="Screenshot der Portfolio-Webseite mit Hero und Portrait" width="800" height="500" loading="lazy" decoding="async" />
           <span class="project-media-overlay">Live ansehen ↗</span>
         </a>
         <div class="project-body">
@@ -634,6 +684,23 @@
       </article>
 
     </div>
+
+    <!-- ── GitHub-Profilkarte ─────────────────────────────
+         Dezenter Abschluss der Projekte: verweist aufs
+         GitHub-Profil, wo der Quellcode aller Projekte liegt.
+    ──────────────────────────────────────────────────── -->
+    <aside class="github-cta">
+      <svg class="github-cta-mark" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      <div class="github-cta-text">
+        <p class="github-cta-title">Mehr auf GitHub</p>
+        <p class="github-cta-desc">Der vollständige Quellcode all meiner Projekte ist öffentlich einsehbar.</p>
+      </div>
+      <a href="https://github.com/jaronsommer" class="github-cta-btn" target="_blank" rel="noopener noreferrer">
+        Profil ansehen ↗
+      </a>
+    </aside>
   </div>
 </section>
 

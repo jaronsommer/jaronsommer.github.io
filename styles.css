@@ -297,6 +297,7 @@
        regardless of the image's original dimensions. */
     .hero-photo img {
       width: 100%;
+      height: auto;              /* overrides the HTML height attr (presentation hint) so aspect-ratio governs the box */
       aspect-ratio: 3 / 4;       /* portrait proportion */
       object-fit: cover;
       object-position: center top; /* favour the face */
@@ -1044,6 +1045,60 @@
       color: var(--white);
     }
 
+    /* GitHub-Profilkarte: ruhiger Abschluss unter dem Projekte-Raster */
+    .github-cta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-top: 2rem;
+      padding: 1.5rem 1.75rem;
+      border: 1px solid var(--ink-faint);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .github-cta:hover {
+      border-color: var(--accent);
+      box-shadow: 0 14px 32px rgba(43,92,230,0.12);
+    }
+    .github-cta-mark {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      color: var(--ink);
+    }
+    .github-cta-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .github-cta-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .github-cta-desc {
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      margin-top: 0.15rem;
+    }
+    .github-cta-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.55rem 1.15rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--white);
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+    .github-cta-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
     /* ══════════════════════════════════════════════════════
        SKILLS-SEKTION
        Drei Blöcke: Sprachen, IT-Tools, Interessen/Hobbys.
@@ -1267,15 +1322,20 @@
 
     .footer-link {
       font-size: 0.78rem;
-      color: var(--ink-faint);
+      color: var(--ink-light);
       text-decoration: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 5px;
-      transition: color 0.2s;
+      gap: 7px;
+      padding: 0.4rem 0.85rem;
+      border: 1px solid var(--ink-faint);
+      border-radius: 100px;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
     .footer-link:hover {
-      color: var(--ink-light);
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-bg);
     }
 
     /* ══════════════════════════════════════════════════════
@@ -1315,6 +1375,14 @@
         gap: 2rem;
       }
       .explorations-grid { gap: 0.85rem; }
+
+      /* GitHub-Profilkarte: vertikal stapeln, zentriert */
+      .github-cta {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+      .github-cta-btn { width: 100%; justify-content: center; }
 
       /* Hero: stack text above photo on mobile */
       .hero-content {
@@ -1373,6 +1441,7 @@
       .exploration-report-hint,
       .report-modal-close,
       .btn-pdf,
+      .github-cta,
       .contact-note {
         display: none !important;
       }
@@ -1578,6 +1647,12 @@
       .footer-text, .footer-link, .footer-note {
         font-size: 9pt;
         color: #555 !important;
+      }
+      /* Footer-Link im Druck ohne Pill-Rahmen (am Bildschirm ein Button) */
+      .footer-link {
+        border: none;
+        padding: 0;
+        background: none;
       }
 
       /* Trennlinien-Margen reduzieren */

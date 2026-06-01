@@ -1,0 +1,8 @@
+# robots.txt – jaronsommer.github.io
+# Persönliche Portfolio-Webseite für die Lehrstellensuche.
+# Alle Inhalte dürfen indexiert werden.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://jaronsommer.github.io/sitemap.xml
