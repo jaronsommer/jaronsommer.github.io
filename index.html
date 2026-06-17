@@ -388,6 +388,19 @@
         <button class="exploration-card exploration-card--report"
                 type="button"
                 data-type="schnupper"
+                  data-modal-trigger="report-corix"
+                aria-label="Bericht zu Schnupperkurs corix AG, Solothurn oeffnen">
+          <span class="exploration-date">09. – 10.06.2026</span>
+          <span class="exploration-title">Schnupperkurs corix AG, Solothurn</span>
+          <span class="exploration-sub">Informatiker/in EFZ Applikationsentwicklung</span>
+          <span class="exploration-report-hint" aria-hidden="true">Bericht ansehen →</span>
+        </button>
+      </div>
+
+      <div role="listitem" class="exploration-listitem-contents">
+        <button class="exploration-card exploration-card--report"
+                type="button"
+                data-type="schnupper"
                 data-modal-trigger="report-bit"
                 aria-label="Bericht zu Schnuppertag BIT, Bern oeffnen">
           <span class="exploration-date">29.05.2026</span>
@@ -458,16 +471,6 @@
     <h3 class="exploration-list-label exploration-list-label--upcoming">Geplant</h3>
     <div class="explorations-grid" role="list">
 
-      <div class="exploration-card exploration-card--upcoming" data-type="schnupper" data-end-date="2026-06-10" role="listitem">
-        <div class="exploration-date">09. – 10.06.2026<span class="exploration-badge">Bald</span></div>
-        <div class="exploration-title">
-          <a href="https://www.corix.ch/schnupperkurse" target="_blank" rel="noopener noreferrer">
-            Schnuppern corix AG, Solothurn ↗
-          </a>
-        </div>
-        <div class="exploration-sub">Informatiker/in EFZ Applikationsentwicklung</div>
-      </div>
-
       <div class="exploration-card exploration-card--upcoming" data-type="schnupper" data-end-date="2026-07-02" role="listitem">
         <div class="exploration-date">01. – 02.07.2026<span class="exploration-badge">Bald</span></div>
         <div class="exploration-title">
@@ -506,6 +509,24 @@
          dargestellt, damit Lehrbetriebe ihn auf dem
          Ausdruck mitbekommen.
     ──────────────────────────────────────────────── -->
+    <dialog id="report-corix" class="report-modal" aria-labelledby="report-corix-title">
+      <button type="button" class="report-modal-close" aria-label="Bericht schliessen">×</button>
+      <article>
+        <p class="report-modal-eyebrow">09. – 10.06.2026 · Schnupperkurs · Informatiker/in EFZ Applikationsentwicklung</p>
+        <h3 id="report-corix-title">corix AG, Solothurn</h3>
+        <ul class="report-highlights">
+          <li>Meteoriten-Spiel mit Scratch programmiert</li>
+          <li>Formen und Farben mit Processing gestaltet</li>
+          <li>Roboter zum Fahren und Sprechen programmiert</li>
+          <li>Einblick in Ausbildung, Berufsschule und überbetriebliche Kurse</li>
+        </ul>
+        <p class="report-description">
+          An meinem zweitägigen Schnupperkurs bei der corix AG in Solothurn habe ich den Beruf Informatiker/in EFZ Applikationsentwicklung kennengelernt. Nach einem Rundgang durch das Gebäude programmierte ich am ersten Tag ein Meteoriten-Spiel mit <a href="https://scratch.mit.edu/" target="_blank" rel="noopener noreferrer">Scratch</a>, gestaltete ein Verkaufsplakat für ein T-Shirt und löste erste Aufgaben mit <a href="https://processing.org/" target="_blank" rel="noopener noreferrer">Processing</a>, bei denen ich Formen und Farben veränderte. Am zweiten Tag vertiefte ich die Arbeit mit Processing und programmierte einen Roboter, der fährt und spricht. Ausserdem erhielt ich einen Einblick in die Ausbildung, die Berufsschule und die überbetrieblichen Kurse (ÜK). Das Team war durchwegs freundlich und hilfsbereit — der Schnupperkurs hat mir grossen Spass gemacht.
+        </p>
+        <a href="https://www.corix.ch" target="_blank" rel="noopener noreferrer" class="report-modal-link">corix.ch ↗</a>
+      </article>
+    </dialog>
+
     <dialog id="report-bit" class="report-modal" aria-labelledby="report-bit-title">
       <button type="button" class="report-modal-close" aria-label="Bericht schliessen">×</button>
       <article>
