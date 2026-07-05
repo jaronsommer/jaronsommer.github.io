@@ -388,6 +388,19 @@
         <button class="exploration-card exploration-card--report"
                 type="button"
                 data-type="schnupper"
+                data-modal-trigger="report-transgourmet"
+                aria-label="Bericht zu Schnupperlehre Transgourmet, Moosseedorf oeffnen">
+          <span class="exploration-date">01. – 02.07.2026</span>
+          <span class="exploration-title">Schnupperlehre Transgourmet, Moosseedorf</span>
+          <span class="exploration-sub">Informatiker/in EFZ Applikationsentwicklung</span>
+          <span class="exploration-report-hint" aria-hidden="true">Bericht ansehen →</span>
+        </button>
+      </div>
+
+      <div role="listitem" class="exploration-listitem-contents">
+        <button class="exploration-card exploration-card--report"
+                type="button"
+                data-type="schnupper"
                   data-modal-trigger="report-corix"
                 aria-label="Bericht zu Schnupperkurs corix AG, Solothurn oeffnen">
           <span class="exploration-date">09. – 10.06.2026</span>
@@ -471,16 +484,6 @@
     <h3 class="exploration-list-label exploration-list-label--upcoming">Geplant</h3>
     <div class="explorations-grid" role="list">
 
-      <div class="exploration-card exploration-card--upcoming" data-type="schnupper" data-end-date="2026-07-02" role="listitem">
-        <div class="exploration-date">01. – 02.07.2026<span class="exploration-badge">Bald</span></div>
-        <div class="exploration-title">
-          <a href="https://www.transgourmet.ch" target="_blank" rel="noopener noreferrer">
-            Schnuppern Transgourmet, Moosseedorf ↗
-          </a>
-        </div>
-        <div class="exploration-sub">Informatiker/in EFZ Applikationsentwicklung</div>
-      </div>
-
       <div class="exploration-card exploration-card--upcoming" data-type="schnupper" data-end-date="2026-07-07" role="listitem">
         <div class="exploration-date">06. – 07.07.2026<span class="exploration-badge">Bald</span></div>
         <div class="exploration-title">
@@ -509,6 +512,23 @@
          dargestellt, damit Lehrbetriebe ihn auf dem
          Ausdruck mitbekommen.
     ──────────────────────────────────────────────── -->
+    <dialog id="report-transgourmet" class="report-modal" aria-labelledby="report-transgourmet-title">
+      <button type="button" class="report-modal-close" aria-label="Bericht schliessen">×</button>
+      <article>
+        <p class="report-modal-eyebrow">01. – 02.07.2026 · Schnupperlehre · Informatiker/in EFZ Applikationsentwicklung</p>
+        <h3 id="report-transgourmet-title">Transgourmet, Moosseedorf</h3>
+        <ul class="report-highlights">
+          <li>Roboter «Karel» durch immer schwierigere Parcours gesteuert</li>
+          <li>Eigene Webseite mit HTML erstellt (Bilder, Links, Tabellen)</li>
+          <li>Rundgang durch das Unternehmen und Einblick in den Beruf</li>
+        </ul>
+        <p class="report-description">
+          An meiner zweitägigen Schnupperlehre bei Transgourmet in Moosseedorf habe ich den Beruf Applikationsentwickler kennengelernt. Nach einer herzlichen Begrüssung und einer Vorstellungsrunde erhielten wir Informationen über das Unternehmen und machten einen Rundgang durch den Betrieb. Danach lernten wir den Beruf genauer kennen. Besonders spannend fand ich die Übung mit dem Roboter «Karel», den wir mit verschiedenen Befehlen durch immer schwierigere Parcours steuern mussten. Am zweiten Tag arbeiteten wir weiter an den Karel-Aufgaben und erstellten anschliessend mit HTML eine eigene Webseite mit Bildern, Links und Tabellen, bevor es zum Abschluss eine Feedbackrunde gab. Die Übungen waren abwechslungsreich und die Erklärungen der Berufsbildner verständlich und hilfreich. Insgesamt hat mir die Schnupperlehre einen guten Einblick in den Beruf gegeben und mein Interesse an der Applikationsentwicklung weiter gestärkt.
+        </p>
+        <a href="https://www.transgourmet.ch" target="_blank" rel="noopener noreferrer" class="report-modal-link">transgourmet.ch ↗</a>
+      </article>
+    </dialog>
+
     <dialog id="report-corix" class="report-modal" aria-labelledby="report-corix-title">
       <button type="button" class="report-modal-close" aria-label="Bericht schliessen">×</button>
       <article>
