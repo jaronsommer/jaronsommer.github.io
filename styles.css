@@ -561,6 +561,17 @@
       color: var(--ink-light);
     }
 
+    /* Zukünftiges Ereignis (z.B. Lehrbeginn) – Punkt & Datum in Akzentfarbe,
+       damit auf einen Blick klar ist: liegt noch vor mir, nicht absolviert. */
+    .tl-item--future .tl-dot {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+    .tl-item--future .tl-date {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     /* ══════════════════════════════════════════════════════
        AUSBILDUNG & ERFAHRUNG (kombiniert, zweispaltig)
        Ausbildungs-Timeline links, Berufserfahrungs-Timeline rechts.
@@ -676,6 +687,22 @@
       font-weight: 600;
       margin-bottom: 0.25rem;
       line-height: 1.35;
+    }
+
+    /* Erfolgs-Tag (z.B. "Lehrstelle erhalten") – anders als .exploration-badge
+       bewusst NICHT im Druck ausgeblendet, da diese Info fuer Lehrbetriebe
+       auch auf dem Ausdruck relevant ist. */
+    .exploration-tag-success {
+      display: inline-block;
+      margin-left: 0.4rem;
+      padding: 1px 7px;
+      border-radius: 100px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      vertical-align: middle;
     }
     .exploration-title a {
       color: inherit;

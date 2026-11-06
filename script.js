@@ -206,7 +206,7 @@
       // E-Mail in Teile aufgeteilt → wird per JS zusammengesetzt
     const parts   = ['jaron.sommer.ch', '@', 'icloud.com'];
     const email   = parts.join('');
-    const subject = encodeURIComponent('Lehrstellenanfrage');
+    const subject = encodeURIComponent('Kontaktanfrage');
     const body    = encodeURIComponent(
             'Hallo Jaron\n\nIch bin auf dein Portfolio gestossen und würde mich gerne mit dir in Verbindung setzen.\n\nFreundliche Grüsse'
     );
